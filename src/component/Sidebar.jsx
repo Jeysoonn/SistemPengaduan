@@ -1,7 +1,88 @@
-export default function Sidebar (){
-    return (
-        <div className="">
+import React from "react";
+import { Link, useLocation } from "react-router-dom";
+import {
+  Search,
+  Home,
+  BarChart2,
+  Send,
+  Globe,
+  Heart,
+  CreditCard,
+  LogOut,
+  Rocket
+} from "lucide-react";
 
+const Sidebar = () => {
+  const location = useLocation();
+
+  const menus = [
+    { icon: Home, name: "Beranda", path: "/" },
+    { icon: BarChart2, name: "Statistik", path: "/statistik" },
+    { icon: Send, name: "Pesan", path: "/pesan" },
+    { icon: Globe, name: "Eksplor", path: "/eksplor" },
+    { icon: Heart, name: "Favorit", path: "/favorit" },
+    { icon: CreditCard, name: "Transaksi", path: "/transaksi" },
+  ];
+
+  return (
+    <div className="w-64 bg-gray-900 text-white h-screen flex flex-col justify-between shadow-lg">
+      {/* TOP SECTION */}
+      <div>
+        {/* Logo */}
+        <div className="flex items-center gap-3 px-6 py-5">
+          <Rocket size={24} className="text-blue-400" />
+          <span className="text-lg font-bold">MyApp</span>
         </div>
-    )
-}
+
+        {/* Divider */}
+        <div className="border-t border-gray-700 mx-4 my-2"></div>
+
+        {/* Menu Items */}
+        <div className="mt-4 space-y-2 px-4">
+          {menus.map((item, index) => {
+            const Icon = item.icon;
+            const isActive = location.pathname === item.path;
+
+            return (
+              <Link
+                key={index}
+                to={item.path}
+                className={`flex items-center px-3 py-2 text-sm rounded-lg transition-all
+                ${isActive ? "bg-gray-700 font-semibold" : "hover:bg-gray-800"}`}
+              >
+                <Icon size={20} className="mr-3" />
+                <span>{item.name}</span>
+              </Link>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* BOTTOM SECTION */}
+      <div className="px-4 py-4">
+        <div className="border-t border-gray-700 mb-4"></div>
+
+        {/* Akun Pengguna */}
+        <div className="flex items-center gap-3 mb-3">
+          <img
+            src="https://via.placeholder.com/40"
+            alt="Akun"
+            className="w-10 h-10 rounded-full object-cover"
+          />
+          <div className="flex flex-col">
+            <span className="text-sm font-medium">John Doe</span>
+            <span className="text-xs text-gray-400">johndoe@email.com</span>
+          </div>
+        </div>
+
+        {/* Logout */}
+        <button className="flex items-center text-sm hover:bg-gray-800 px-3 py-2 rounded-lg w-full transition">
+          <LogOut size={18} className="mr-3" />
+          <span>Keluar</span>
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default Sidebar;
