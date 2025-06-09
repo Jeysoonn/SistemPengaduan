@@ -18,10 +18,7 @@ const Sidebar = () => {
   const menus = [
     { icon: Home, name: "Beranda", path: "/" },
     { icon: BarChart2, name: "Statistik", path: "/statistik" },
-    { icon: Send, name: "Pesan", path: "/pesan" },
-    { icon: Globe, name: "Eksplor", path: "/eksplor" },
-    { icon: Heart, name: "Favorit", path: "/favorit" },
-    { icon: CreditCard, name: "Transaksi", path: "/transaksi" },
+    { icon: Send, name: "Laporan", path: "/laporan" },
   ];
 
   return (
