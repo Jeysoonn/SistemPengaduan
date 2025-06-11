@@ -1,9 +1,7 @@
 @import "tailwindcss";
 
-
-@plugin "daisyui" {
-    themes: light --default, dark --prefersdark;
-};
+@import "daisyui";
+@plugin "daisyui";
 
 /* Montserrat */
 @font-face {
