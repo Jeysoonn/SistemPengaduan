@@ -1,8 +1,5 @@
 @import "tailwindcss";
 
-@import "daisyui";
-@plugin "daisyui";
-
 /* Montserrat */
 @font-face {
   font-family: 'Montserrat';
