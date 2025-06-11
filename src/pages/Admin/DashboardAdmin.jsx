@@ -1,3 +1,5 @@
+import Breadcrumb from "../../component/Breadcrumb";
+
 export default function Dashboard () {
   // Data untuk Dashboard Cards
   const data = [
@@ -7,7 +9,8 @@ export default function Dashboard () {
   ];
 
   return (
-    <div className="flex-1 p-6">
+   <div className="container mx-auto p-4">
+      <Breadcrumb />
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <div className="text-3xl font-semibold">Dashboard Overview</div>

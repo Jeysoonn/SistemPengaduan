@@ -4,7 +4,7 @@ import Sidebar from "../component/SidebarBSTI";
 
 export default function BstiLayout (){
     return (
-    <div className="flex">
+    <div className="flex bg-gray-50">
       <Sidebar />
       <div className="flex-1 p-6">
         <Outlet />

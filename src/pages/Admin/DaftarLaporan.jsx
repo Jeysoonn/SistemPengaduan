@@ -1,42 +1,126 @@
-import React from 'react';
+import React, { useState, useEffect } from "react";
+import Breadcrumb from "../../component/Breadcrumb";
+import { notesAPI } from "../../service/apiPengaduan"; // Import notesAPI
 
-const DaftarLaporan = () => {
+export default function Laporan() {
+  const [pengaduanList, setPengaduanList] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // Mengambil data pengaduan dari API
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Ambil data menggunakan axios dari api.js
+        const data = await notesAPI.fetchNotes();
+
+        // Pastikan data adalah array sebelum diset
+        if (Array.isArray(data)) {
+          setPengaduanList(data);
+        } else {
+          console.error("Data yang diterima bukan array:", data);
+        }
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <div className="bg-white rounded-lg shadow-md p-6">
-        <h2 className="text-2xl font-semibold text-gray-800 mb-6">Laporan Pengaduan</h2>
+    <div className="container mx-auto p-4">
+      <Breadcrumb />
 
-        {/* Filter */}
-        <div className="mb-4">
-          <input type="date" className="px-4 py-2 rounded-lg border border-gray-300" />
-          <button className="ml-4 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Filter</button>
-        </div>
-
-        {/* Tabel */}
-        <table className="min-w-full table-auto">
-          <thead>
-            <tr className="bg-gray-200">
-              <th className="py-3 px-4 text-left text-sm font-semibold text-gray-700">Tanggal</th>
-              <th className="py-3 px-4 text-left text-sm font-semibold text-gray-700">Laporan</th>
-              <th className="py-3 px-4 text-left text-sm font-semibold text-gray-700">Status</th>
-              <th className="py-3 px-4 text-left text-sm font-semibold text-gray-700">Aksi</th>
+      <h2 className="text-2xl font-semibold mt-6 mb-4">Tabel Pengaduan</h2>
+      <div className="overflow-x-auto">
+        <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
+          <thead className="bg-gray-100">
+            <tr>
+              <th className="px-4 py-2 text-left text-sm font-medium text-gray-600">
+                ID Pengaduan
+              </th>
+              <th className="px-4 py-2 text-left text-sm font-medium text-gray-600">
+                Judul Laporan
+              </th>
+              <th className="px-4 py-2 text-left text-sm font-medium text-gray-600">
+                Deskripsi
+              </th>
+              <th className="px-4 py-2 text-left text-sm font-medium text-gray-600">
+                Tujuan Laporan
+              </th>
+              <th className="px-4 py-2 text-left text-sm font-medium text-gray-600">
+                Tanggal Pengaduan
+              </th>
+              <th className="px-4 py-2 text-left text-sm font-medium text-gray-600">
+                Bukti
+              </th>
+              <th className="px-4 py-2 text-left text-sm font-medium text-gray-600">
+                Status
+              </th>
+              <th className="px-4 py-2 text-left text-sm font-medium text-gray-600">
+                ID User
+              </th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td className="py-3 px-4 text-sm text-gray-800">2025-06-10</td>
-              <td className="py-3 px-4 text-sm text-gray-600">Laporan Pengaduan #1</td>
-              <td className="py-3 px-4 text-sm text-green-600">Selesai</td>
-              <td className="py-3 px-4 text-sm">
-                <button className="bg-blue-500 text-white py-2 px-3 rounded-md hover:bg-blue-600">Lihat</button>
-              </td>
-            </tr>
-            {/* Tambahkan baris lainnya sesuai kebutuhan */}
+            {pengaduanList.length > 0 ? (
+              pengaduanList.map((pengaduan) => (
+                <tr
+                  key={pengaduan.id_pengaduan}
+                  className="border-t border-gray-200"
+                >
+                  <td className="px-4 py-2 text-sm text-gray-700">
+                    {pengaduan.id_pengaduan}
+                  </td>
+                  <td className="px-4 py-2 text-sm text-gray-700">
+                    {pengaduan.judul_laporan}
+                  </td>
+                  <td className="px-4 py-2 text-sm text-gray-700">
+                    {pengaduan.deskripsi}
+                  </td>
+                  <td className="px-4 py-2 text-sm text-gray-700">
+                    {pengaduan.tujuan_laporan}
+                  </td>
+                  <td className="px-4 py-2 text-sm text-gray-700">
+                    {pengaduan.tanggal_pengaduan}
+                  </td>
+                  <td className="px-4 py-2 text-sm text-gray-700">
+                    <a
+                      href={`/path/to/files/${pengaduan.bukti}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-500 hover:underline"
+                    >
+                      Lihat Bukti
+                    </a>
+                  </td>
+                  <td className="px-4 py-2 text-sm text-gray-700">
+                    {pengaduan.status}
+                  </td>
+                  <td className="px-4 py-2 text-sm text-gray-700">
+                    {pengaduan.id_user}
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td
+                  colSpan="8"
+                  className="px-4 py-2 text-sm text-gray-700 text-center"
+                >
+                  Tidak ada pengaduan untuk ditampilkan.
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>
     </div>
   );
-};
-
-export default DaftarLaporan;
+}

@@ -2,7 +2,7 @@ import Breadcrumb from "../../component/Breadcrumb";
 
 const Dashboard = () => {
   return (
-    <div>
+    <div className="container mx-auto p-4">
       <Breadcrumb />
     </div>
   );

@@ -8,6 +8,9 @@ const DaftarLaporan = lazy(() => import("./pages/Admin/DaftarLaporan"));
 const DetailLaporan = lazy(() => import("./pages/Admin/DetailLaporan"));
 const User = lazy(() => import("./pages/Admin/User"));
 const AdminLayout = lazy(() => import("./layout/AdminLayout"));
+const BstiLayout = lazy(() => import("./layout/BSTILayout"));
+const DashboardBsti = lazy(() => import("./pages/Bsti/Dashboard"));
+const LaporanPengaduan = lazy(() => import("./pages/Bsti/LaporanPengaduan"));
 
 function App() {
   return (
@@ -15,12 +18,17 @@ function App() {
       <Suspense fallback={<LoadingSpinner />}> {/* Menggunakan LoadingSpinner */}
         <Routes>
           {/* Menggunakan AdminLayout sebagai Parent dengan Lazy Load */}
-          <Route path="/" element={<AdminLayout />}>
+          <Route path="/admin" element={<AdminLayout />}>
             {/* Rute untuk Halaman Admin */}
             <Route index element={<DashboardAdmin />} />
-            <Route path="/daftar-laporan" element={<DaftarLaporan />} />
-            <Route path="/detail-laporan/:id" element={<DetailLaporan />} />
-            <Route path="/user" element={<User />} />
+            <Route path="/admin/daftar-laporan" element={<DaftarLaporan />} />
+            <Route path="/admin/detail-laporan/:id" element={<DetailLaporan />} />
+            <Route path="/admin/user" element={<User />} />
+          </Route>
+          <Route path="/bsti" element={<BstiLayout />}>
+            {/* Rute untuk Halaman Admin */}
+            <Route index element={<DashboardBsti />} />
+            <Route path="/bsti/laporanpengaduan" element={<LaporanPengaduan />} />
           </Route>
         </Routes>
       </Suspense>

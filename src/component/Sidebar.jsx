@@ -13,10 +13,10 @@ const Sidebar = () => {
   const location = useLocation();
 
   const menus = [
-    { icon: Home, name: "Beranda", path: "/" },
-    { icon: BarChart2, name: "Statistik", path: "/statistik" },
-    { icon: Send, name: "Laporan", path: "/daftar-laporan" },
-    { icon: Users, name: "User", path: "/user" },
+    { icon: Home, name: "Beranda", path: "/admin/" },
+    // { icon: BarChart2, name: "Statistik", path: "/statistik" },
+    { icon: Send, name: "Laporan", path: "/admin/daftar-laporan" },
+    { icon: Users, name: "User", path: "/admin/user" },
   ];
 
   return (

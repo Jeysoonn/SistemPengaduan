@@ -1,18 +1,24 @@
 import React, { useState, useEffect } from "react";
 import Breadcrumb from "../../component/Breadcrumb";
-import { notesAPI } from "../../service/api"; // Import notesAPI
+import { notesAPI } from "../../service/apiPengaduan"; // Import notesAPI
 
 export default function Laporan() {
   const [pengaduanList, setPengaduanList] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Mengambil data pengaduan dari API (menggunakan axios dari api.js)
+  // Mengambil data pengaduan dari API
   useEffect(() => {
     const fetchData = async () => {
       try {
         // Ambil data menggunakan axios dari api.js
         const data = await notesAPI.fetchNotes();
-        setPengaduanList(data);
+
+        // Pastikan data adalah array sebelum diset
+        if (Array.isArray(data)) {
+          setPengaduanList(data);
+        } else {
+          console.error("Data yang diterima bukan array:", data);
+        }
         setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -63,44 +69,55 @@ export default function Laporan() {
             </tr>
           </thead>
           <tbody>
-            {pengaduanList.map((pengaduan) => (
-              <tr
-                key={pengaduan.ID_Pengaduan}
-                className="border-t border-gray-200"
-              >
-                <td className="px-4 py-2 text-sm text-gray-700">
-                  {pengaduan.ID_Pengaduan}
-                </td>
-                <td className="px-4 py-2 text-sm text-gray-700">
-                  {pengaduan.Judul_Laporan}
-                </td>
-                <td className="px-4 py-2 text-sm text-gray-700">
-                  {pengaduan.Deskripsi}
-                </td>
-                <td className="px-4 py-2 text-sm text-gray-700">
-                  {pengaduan.Tujuan_Laporan}
-                </td>
-                <td className="px-4 py-2 text-sm text-gray-700">
-                  {pengaduan.Tanggal_Pengaduan}
-                </td>
-                <td className="px-4 py-2 text-sm text-gray-700">
-                  <a
-                    href={`/path/to/files/${pengaduan.Bukti}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-500 hover:underline"
-                  >
-                    Lihat Bukti
-                  </a>
-                </td>
-                <td className="px-4 py-2 text-sm text-gray-700">
-                  {pengaduan.Status}
-                </td>
-                <td className="px-4 py-2 text-sm text-gray-700">
-                  {pengaduan.ID_User}
+            {pengaduanList.length > 0 ? (
+              pengaduanList.map((pengaduan) => (
+                <tr
+                  key={pengaduan.id_pengaduan}
+                  className="border-t border-gray-200"
+                >
+                  <td className="px-4 py-2 text-sm text-gray-700">
+                    {pengaduan.id_pengaduan}
+                  </td>
+                  <td className="px-4 py-2 text-sm text-gray-700">
+                    {pengaduan.judul_laporan}
+                  </td>
+                  <td className="px-4 py-2 text-sm text-gray-700">
+                    {pengaduan.deskripsi}
+                  </td>
+                  <td className="px-4 py-2 text-sm text-gray-700">
+                    {pengaduan.tujuan_laporan}
+                  </td>
+                  <td className="px-4 py-2 text-sm text-gray-700">
+                    {pengaduan.tanggal_pengaduan}
+                  </td>
+                  <td className="px-4 py-2 text-sm text-gray-700">
+                    <a
+                      href={`/path/to/files/${pengaduan.bukti}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-500 hover:underline"
+                    >
+                      Lihat Bukti
+                    </a>
+                  </td>
+                  <td className="px-4 py-2 text-sm text-gray-700">
+                    {pengaduan.status}
+                  </td>
+                  <td className="px-4 py-2 text-sm text-gray-700">
+                    {pengaduan.id_user}
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td
+                  colSpan="8"
+                  className="px-4 py-2 text-sm text-gray-700 text-center"
+                >
+                  Tidak ada pengaduan untuk ditampilkan.
                 </td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>

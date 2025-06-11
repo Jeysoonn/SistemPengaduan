@@ -1,79 +1,127 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { notesAPI } from "../../service/apiUser"; // Import notesAPI
+import Breadcrumb from "../../component/Breadcrumb";
 
-const UserPage = () => {
-  const [activeTab, setActiveTab] = useState("Security");
+export default function Laporan() {
+  const [pengaduanList, setPengaduanList] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [formData, setFormData] = useState({
+    nama: "",
+    email: "",
+    role: ""
+  });
 
-  const users = [
-    { name: "John Doe", email: "johndoe@email.com", role: "Security", status: "Active" },
-    { name: "Jane Smith", email: "janesmith@email.com", role: "BSTI", status: "Inactive" },
-    { name: "Mike Johnson", email: "mikejohnson@email.com", role: "BAAK", status: "Active" },
-    { name: "Chris Lee", email: "chrislee@email.com", role: "Security", status: "Active" },
-    { name: "Anna Davis", email: "annadavis@email.com", role: "BSTI", status: "Active" },
-    // More users can go here
-  ];
+  // Mengambil data pengaduan dari API
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await notesAPI.fetchNotes();
 
-  // Filter users by role
-  const filteredUsers = (role) => users.filter(user => user.role === role);
+        if (Array.isArray(data)) {
+          setPengaduanList(data);
+        } else {
+          console.error("Data yang diterima bukan array:", data);
+        }
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    // Add your submit logic here
+  };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto p-6">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-semibold text-gray-800">Users</h2>
-          <button className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">
-            Add New User
+    <div className="container mx-auto p-4">
+      <Breadcrumb />
+      <h2 className="text-2xl font-semibold mt-6 mb-4">Tabel Pengaduan</h2>
+      
+      {/* Form Input for User
+      <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
+        <h3 className="text-lg font-semibold text-gray-800 mb-4">Tambah Pengguna</h3>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <input
+            type="text"
+            name="nama"
+            value={formData.nama}
+            onChange={handleChange}
+            placeholder="Nama"
+            className="w-full p-3 bg-gray-50 rounded-2xl border border-gray-200"
+            required
+          />
+          <input
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            placeholder="Email"
+            className="w-full p-3 bg-gray-50 rounded-2xl border border-gray-200"
+            required
+          />
+          <input
+            type="text"
+            name="role"
+            value={formData.role}
+            onChange={handleChange}
+            placeholder="Role"
+            className="w-full p-3 bg-gray-50 rounded-2xl border border-gray-200"
+            required
+          />
+          <button type="submit" className="px-6 py-3 bg-emerald-600 text-white font-semibold rounded-2xl">
+            Submit
           </button>
-        </div>
+        </form>
+      </div> */}
 
-        {/* Tabs */}
-        <div className="mb-6">
-          <ul className="flex space-x-4">
-            {["Security", "BSTI", "BAAK"].map((role) => (
-              <li
-                key={role}
-                className={`cursor-pointer py-2 px-4 rounded-lg text-base font-medium transition-colors 
-                  ${activeTab === role ? "bg-blue-500 text-white" : "text-blue-500 hover:bg-blue-100"}`}
-                onClick={() => setActiveTab(role)}
-              >
-                {role}
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* User Table */}
-        <div className="bg-white p-6 rounded-lg shadow-md">
-          <table className="min-w-full table-auto">
-            <thead>
-              <tr className="bg-gray-200">
-                <th className="py-3 px-4 text-left text-sm font-semibold text-gray-700">Name</th>
-                <th className="py-3 px-4 text-left text-sm font-semibold text-gray-700">Email</th>
-                <th className="py-3 px-4 text-left text-sm font-semibold text-gray-700">Status</th>
-                <th className="py-3 px-4 text-left text-sm font-semibold text-gray-700">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredUsers(activeTab).map((user, index) => (
-                <tr key={index}>
-                  <td className="py-3 px-4 text-sm text-gray-800">{user.name}</td>
-                  <td className="py-3 px-4 text-sm text-gray-600">{user.email}</td>
-                  <td className="py-3 px-4 text-sm text-green-600">{user.status}</td>
-                  <td className="py-3 px-4 text-sm">
-                    <button className="bg-blue-500 text-white py-2 px-3 rounded-md hover:bg-blue-600">
-                      Edit
-                    </button>
-                    <button className="bg-red-500 text-white py-2 px-3 rounded-md hover:bg-red-600 ml-2">
-                      Delete
-                    </button>
-                  </td>
+      {/* Tabel Data Pengaduan */}
+      <div className="overflow-x-auto">
+        <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
+          <thead className="bg-gray-100">
+            <tr>
+              <th className="px-4 py-2 text-left text-sm font-medium text-gray-600">ID Pengaduan</th>
+              <th className="px-4 py-2 text-left text-sm font-medium text-gray-600">Nama</th>
+              <th className="px-4 py-2 text-left text-sm font-medium text-gray-600">Email</th>
+              <th className="px-4 py-2 text-left text-sm font-medium text-gray-600">Role</th>
+            </tr>
+          </thead>
+          <tbody>
+            {pengaduanList.length > 0 ? (
+              pengaduanList.map((pengaduan) => (
+                <tr key={pengaduan.id_user} className="border-t border-gray-200">
+                  <td className="px-4 py-2 text-sm text-gray-700">{pengaduan.id_user}</td>
+                  <td className="px-4 py-2 text-sm text-gray-700">{pengaduan.nama}</td>
+                  <td className="px-4 py-2 text-sm text-gray-700">{pengaduan.email}</td>
+                  <td className="px-4 py-2 text-sm text-gray-700">{pengaduan.role}</td>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="4" className="px-4 py-2 text-sm text-gray-700 text-center">
+                  Tidak ada data untuk ditampilkan.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
       </div>
     </div>
   );
-};
-
-export default UserPage;
+}

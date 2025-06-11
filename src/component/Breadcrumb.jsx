@@ -10,6 +10,8 @@ const Breadcrumb = () => {
   const breadcrumbNameMap = {
     'bsti': 'Dashboard',
     'laporanpengaduan': 'Laporan Pengaduan',
+    'user' : 'User',
+    'admin' : "Dashboard"
     // Tambahkan path lain sesuai kebutuhan
   };
 
