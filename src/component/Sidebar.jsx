@@ -24,7 +24,7 @@ const Sidebar = () => {
         {/* Logo */}
         <div className="flex items-center gap-3 px-6 py-5 font-bold">
           <Rocket size={24} className="text-blue-400" />
-          <span className="text-lg">MyApp</span>
+          <span className="text-lg">e-Lapor PCR</span>
         </div>
 
         {/* Divider */}
