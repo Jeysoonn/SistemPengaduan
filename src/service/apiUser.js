@@ -12,11 +12,6 @@ const headers = {
 };
 
 export const notesAPI = {
-  async fetchNotes() {
-    const response = await axios.get(API_URL, { headers });
-    return response.data;
-  },
-
   async createNote(data) {
     const response = await axios.post(API_URL, data, { headers });
     return response.data;
@@ -39,5 +34,55 @@ export const notesAPI = {
       return [];
     }
   },
+
+  async getLastUserId() {
+    try {
+      const response = await axios.get(API_URL, {
+        headers,
+        params: {
+          order: 'id_user.desc',  // Urutkan berdasarkan id_user secara menurun
+          limit: 1,  // Ambil hanya satu data terakhir
+        },
+      });
+
+      // Mengambil ID terakhir dari respons
+      if (response.data && response.data.length > 0) {
+        const lastUser = response.data[0];
+        return lastUser.id_user;  // Mengembalikan ID terakhir
+      } else {
+        return 0;  // Jika tidak ada data, mulai dengan ID 1
+      }
+    } catch (error) {
+      console.error("Error fetching last user ID:", error);
+      throw new Error("Error fetching last user ID: " + error.message);
+    }
+  },
+
+  // Fungsi untuk membuat pengguna baru
+  async createUser(data) {
+    try {
+      // Ambil ID terakhir dan increment
+      const lastId = await this.getLastUserId();
+      const newId = lastId + 1; // Increment ID terakhir
+
+      // Menambahkan id_user yang baru
+      const userData = {
+        ...data,
+        id_user: newId,  // Menambahkan ID yang sudah di-increment
+      };
+
+      const response = await axios.post(API_URL, userData, { headers });
+
+      if (response.status === 201) {
+        return response.data; // Pengguna berhasil dibuat
+      } else {
+        console.error("Error while creating user:", response.status, response.statusText);
+        throw new Error("Error while creating user");
+      }
+    } catch (error) {
+      console.error("Error in createUser:", error.response || error.message);
+      throw new Error("Error creating user: " + (error.response ? error.response.data : error.message));
+    }
+  }
 
 };
