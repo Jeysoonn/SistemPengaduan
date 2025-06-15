@@ -34,8 +34,8 @@ export default function Login() {
         // Setelah login berhasil, periksa role pengguna dan arahkan ke halaman yang sesuai
         if (user.role === "Admin") {
           navigate("/admin");  // Jika admin, arahkan ke dashboard admin
-        } else if (user.role === "user") {
-          navigate("/user");  // Jika user biasa, arahkan ke dashboard user
+        } else if (user.role === "Mahasiswa") {
+          navigate("/mahasiswa");  // Jika user biasa, arahkan ke dashboard user
         } else {
           setError("Unknown role");
         }
