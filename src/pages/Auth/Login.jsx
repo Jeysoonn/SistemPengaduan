@@ -35,7 +35,7 @@ export default function Login() {
         if (user.role === "Admin") {
           navigate("/admin");  // Jika admin, arahkan ke dashboard admin
         } else if (user.role === "Mahasiswa") {
-          navigate("/user");  // Jika user biasa, arahkan ke dashboard user
+          navigate("/mahasiswa");  // Jika user biasa, arahkan ke dashboard user
         } else {
           setError("Unknown role");
         }
