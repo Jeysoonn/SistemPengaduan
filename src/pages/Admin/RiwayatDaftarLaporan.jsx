@@ -36,7 +36,7 @@ export default function Laporan() {
       try {
         const data = await pengaduanAPI.fetchPengaduan();
         if (Array.isArray(data)) {
-          setPengaduanList(data.filter(item => item.status !== "Selesai")); // Filter out "Selesai" pengaduan
+          setPengaduanList(data.filter(item => item.status === "Selesai")); // Tampilkan hanya pengaduan Selesai
         } else {
           console.error("Data yang diterima bukan array:", data);
         }
@@ -135,7 +135,7 @@ export default function Laporan() {
 
       // Step 6: Re-fetch the Pengaduan list to update the table
       const updatedData = await pengaduanAPI.fetchPengaduan();
-      setPengaduanList(updatedData.filter(item => item.status !== "Selesai")); // Filter out "Selesai" pengaduan
+      setPengaduanList(updatedData.filter(item => item.status === "Selesai")); // Filter out "Selesai" pengaduan
 
       // Step 7: Close the modal after successful submission
       handleModalClose(); // Close the modal after submitting the tanggapan
@@ -177,7 +177,7 @@ export default function Laporan() {
     try {
       await pengaduanAPI.updatePengaduan(selectedPengaduan.id_pengaduan, editFormData);
       const updatedData = await pengaduanAPI.fetchPengaduan();
-      setPengaduanList(updatedData.filter(item => item.status !== "Selesai"));
+      setPengaduanList(updatedData.filter(item => item.status === "Selesai"));
       handleEditModalClose();
     } catch (error) {
       console.error("Error updating pengaduan:", error);
@@ -189,7 +189,7 @@ export default function Laporan() {
       try {
         await pengaduanAPI.deletePengaduan(id);
         const updatedData = await pengaduanAPI.fetchPengaduan();
-        setPengaduanList(updatedData.filter(item => item.status !== "Selesai"));
+        setPengaduanList(updatedData.filter(item => item.status === "Selesai"));
       } catch (error) {
         console.error("Error deleting pengaduan:", error);
       }

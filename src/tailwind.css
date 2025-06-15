@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-@plugin "daisyui" 
+@plugin "daisyui";
 
 /* Montserrat */
 @font-face {
@@ -54,4 +54,28 @@
   --font-montserrat-medium: "Montserrat-Medium", sans-serif;
   --font-montserrat-bold: "Montserrat-Bold", sans-serif;
   --font-montserrat-extrabold: "Montserrat-ExtraBold", sans-serif;
+}
+
+/* Pastikan teks di modal terlihat */
+.bg-white {
+  background-color: #ffffff; /* Warna latar belakang putih untuk modal */
+}
+
+.text-gray-700 {
+  color: #4a4a4a; /* Pastikan teks memiliki warna kontras yang cukup */
+}
+
+/* Pastikan input dan textarea juga memiliki warna teks yang cukup kontras */
+input, textarea {
+  color: #333; /* Warna teks hitam untuk input dan textarea */
+}
+
+/* Pastikan tombol memiliki kontras yang cukup */
+button {
+  color: #fff; /* Warna teks putih pada tombol */
+}
+
+/* Pastikan teks tidak transparan */
+.modal-text {
+  opacity: 1; /* Pastikan teks di dalam modal tidak transparan */
 }

@@ -11,14 +11,16 @@ const Breadcrumb = () => {
     'bsti': 'Dashboard',
     'laporanpengaduan': 'Laporan Pengaduan',
     'user' : 'User',
-    'admin' : "Dashboard"
+    'admin' : 'Dashboard',
+    'daftar-laporan' : 'Daftar Laporan',
+    'riwayat-daftar-laporan' : 'Riwayat Laporan',
     // Tambahkan path lain sesuai kebutuhan
   };
 
   return (
     <nav className="flex items-center space-x-2 text-sm text-gray-500 mb-4">
       {/* Home Link */}
-      <Link to="/bsti" className="hover:text-gray-700 flex items-center">
+      <Link to="" className="hover:text-gray-700 flex items-center">
         <Home size={16} className="mr-2" />
         Home
       </Link>

@@ -1,6 +1,6 @@
 import Breadcrumb from "../../component/Breadcrumb";
 
-export default function Dashboard () {
+export default function Dashboard() {
   // Data untuk Dashboard Cards
   const data = [
     { title: "Total Sales", value: "$24,000", subtitle: "Since last week" },
@@ -9,13 +9,9 @@ export default function Dashboard () {
   ];
 
   return (
-   <div className="container mx-auto p-4">
+    <div className="container mx-auto p-4">
+      <h2 className="text-2xl font-semibold mt-6 mb-4 text-gray-900">Tabel Pengaduan</h2>
       <Breadcrumb />
-      {/* Header */}
-      <div className="flex justify-between items-center mb-6">
-        <div className="text-3xl font-semibold">Dashboard Overview</div>
-        
-      </div>
 
       {/* Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

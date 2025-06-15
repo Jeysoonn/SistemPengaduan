@@ -11,18 +11,18 @@ const headers = {
   "Content-Type": "application/json",
 };
 
-export const notesAPI = {
-  async fetchNotes() {
+export const userAPI = {
+  async fetchUser() {
     const response = await axios.get(API_URL, { headers });
     return response.data;
   },
 
-  async createNote(data) {
+  async createUser(data) {
     const response = await axios.post(API_URL, data, { headers });
     return response.data;
   },
 
-  async fetchNotes() {
+  async fetchUser() {
     try {
       const response = await axios.get(API_URL, { headers });
       console.log("HTTP Status:", response.status); // Log status HTTP
