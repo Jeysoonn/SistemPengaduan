@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { notesAPI } from "../../service/apiUser";  // Import notesAPI untuk mengambil data pengguna
+import { userAPI } from "../../service/apiUser";  // Import notesAPI untuk mengambil data pengguna
 import { useNavigate } from "react-router-dom";  // Untuk navigasi setelah login
 
 export default function Login() {
@@ -23,7 +23,7 @@ export default function Login() {
 
     try {
       // Cek data login ke API menggunakan notesAPI
-      const users = await notesAPI.fetchNotes();
+      const users = await userAPI.fetchNotes();
 
       // Mencari pengguna berdasarkan email
       const user = users.find(

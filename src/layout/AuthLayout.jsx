@@ -13,9 +13,9 @@ export default function AuthLayout() {
         {/* Right Panel */}
         <div className="hidden md:flex md:w-1/2 bg-gradient-to-br from-blue-500 to-green-500 items-center justify-center p-8 text-white">
           <div className="text-center">
-            <h3 className="text-2xl font-bold mb-2 font-montserrat">HTML CSS Auth Form</h3>
-            <p className="text-sm max-w-xs font-montserrat">
-              This form is recreated using React, Tailwind CSS, and React Router.
+            <h3 className="text-2xl font-bold mb-2 font-montserrat">Suara Anda Membentuk Perubahan</h3>
+            <p className="text-sm font-montserrat">
+              Laporkan permasalahan, saran, atau aspirasi Anda dengan mudah dan cepat.
             </p>
           </div>
         </div>

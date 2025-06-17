@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { notesAPI } from "../../service/apiUser";  // Mengimpor notesAPI untuk registrasi
+import { userAPI } from "../../service/apiUser";  // Mengimpor notesAPI untuk registrasi
 import { useNavigate } from "react-router-dom";  // Untuk navigasi setelah registrasi
 
 export default function Register() {
@@ -40,7 +40,7 @@ export default function Register() {
       };
 
       // Menggunakan notesAPI untuk membuat pengguna baru
-      const response = await notesAPI.createUser(userData);
+      const response = await userAPI.createUser(userData);
       console.log("User registered:", response);
 
       // Arahkan pengguna setelah registrasi berhasil (misalnya ke halaman login)
