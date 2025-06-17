@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Breadcrumb from "../../component/Breadcrumb";
-import { notesAPI } from "../../service/apiPengaduan"; // Import notesAPI
+import { pengaduanAPI } from "../../service/apiPengaduan"; // Import notesAPI
 
 export default function Laporan() {
   const [pengaduanList, setPengaduanList] = useState([]);
@@ -11,7 +11,7 @@ export default function Laporan() {
     const fetchData = async () => {
       try {
         // Ambil data menggunakan axios dari api.js
-        const data = await notesAPI.fetchNotes();
+        const data = await pengaduanAPI.fetchNotes();
 
         // Pastikan data adalah array sebelum diset
         if (Array.isArray(data)) {
