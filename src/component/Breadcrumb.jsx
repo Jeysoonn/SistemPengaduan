@@ -14,6 +14,7 @@ const Breadcrumb = () => {
     'admin' : 'Dashboard',
     'daftar-laporan' : 'Daftar Laporan',
     'riwayat-daftar-laporan' : 'Riwayat Laporan',
+    'faq' : 'FAQ',
     // Tambahkan path lain sesuai kebutuhan
   };
 

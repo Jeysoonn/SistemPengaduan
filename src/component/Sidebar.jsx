@@ -6,6 +6,7 @@ import {
   LogOut,
   Rocket,
   Users,
+  HelpCircle,
 } from "lucide-react";
 
 const Sidebar = () => {
@@ -26,6 +27,7 @@ const Sidebar = () => {
       ],
     },
     { icon: Users, name: "User", path: "/admin/user" },
+    { icon: HelpCircle, name: "FAQ", path: "/admin/faq" },
   ];
 
   return (
@@ -66,12 +68,12 @@ const Sidebar = () => {
                     </svg>
                   </button>
                   {laporanOpen && (
-                    <ul className="bg-white shadow-lg border border-gray-200 rounded-lg mt-2 py-2 px-1">
+                    <ul className="bg-white text-black font-semibold shadow-md border border-gray-200 rounded-lg mt-2 py-2 px-1">
                       {item.dropdown.map((sub, subIdx) => (
                         <li key={subIdx}>
                           <Link
                             to={sub.path}
-                            className={`block px-4 py-2 rounded-md text-sm font-medium transition-all ${
+                            className={`block px-4 py-2 rounded-md text-sm font-medium transition-all text-black ${
                               location.pathname === sub.path
                                 ? "bg-blue-100 text-blue-700 font-semibold"
                                 : "text-black hover:bg-gray-200"

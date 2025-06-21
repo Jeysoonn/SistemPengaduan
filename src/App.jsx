@@ -22,6 +22,11 @@
   const Home = lazy(() => import("./pages/Mahasiswa/Home"));
   const Formulir = lazy(() => import("./pages/Mahasiswa/Formulir"));
 
+  const Faq = lazy(() => import("./pages/Admin/Faq"));
+
+  const RiwayatDaftarLaporanBSTI = lazy(() => import("./pages/Bsti/RiwayatDaftarLaporan"));
+  const DaftarLaporanBSTI = lazy(() => import("./pages/Bsti/DaftarLaporan"));
+
 
 function App() {
   return (
@@ -33,11 +38,13 @@ function App() {
             <Route path="/admin/daftar-laporan" element={<DaftarLaporan />} />
             <Route path="/admin/user" element={<User />} />
             <Route path="/admin/riwayat-daftar-laporan" element={<RiwayatDaftarLaporan />} />
+            <Route path="/admin/faq" element={<Faq />} />
           </Route>
           <Route path="/bsti" element={<BstiLayout />}>
             {/* Rute untuk Halaman Admin */}
             <Route index element={<DashboardBsti />} />
-            <Route path="/bsti/laporanpengaduan" element={<LaporanPengaduan />} />
+            <Route path="/bsti/daftar-laporan" element={<DaftarLaporanBSTI />} />
+            <Route path="/bsti/riwayat-daftar-laporan" element={<RiwayatDaftarLaporanBSTI />} />
           </Route>
           <Route path="/auth" element={<AuthLayout />}> {/* Menggunakan AuthLayout */}
             <Route path="/auth/login" element={<Login />} />
