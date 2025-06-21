@@ -23,7 +23,7 @@ export default function Login() {
 
     try {
       // Cek data login ke API menggunakan notesAPI
-      const users = await userAPI.fetchNotes();
+      const users = await userAPI.fetchUser();
 
       // Mencari pengguna berdasarkan email
       const user = users.find(
@@ -35,7 +35,7 @@ export default function Login() {
         if (user.role === "Admin") {
           navigate("/admin");  // Jika admin, arahkan ke dashboard admin
         } else if (user.role === "Mahasiswa") {
-          navigate("/mahasiswa");  // Jika user biasa, arahkan ke dashboard user
+          navigate("/home");  // Jika user biasa, arahkan ke dashboard user
         } else {
           setError("Unknown role");
         }
