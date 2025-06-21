@@ -7,11 +7,15 @@ const DashboardAdmin = lazy(() => import("./pages/Admin/DashboardAdmin"));
 const DaftarLaporan = lazy(() => import("./pages/Admin/DaftarLaporan"));
 const DetailLaporan = lazy(() => import("./pages/Admin/DetailLaporan"));
 const User = lazy(() => import("./pages/Admin/User"));
+const Faq = lazy(() => import("./pages/Admin/Faq"));
 const AdminLayout = lazy(() => import("./layout/AdminLayout"));
 const BstiLayout = lazy(() => import("./layout/BSTILayout"));
 const DashboardBsti = lazy(() => import("./pages/Bsti/Dashboard"));
 const LaporanPengaduan = lazy(() => import("./pages/Bsti/LaporanPengaduan"));
 const RiwayatDaftarLaporan = lazy(() => import("./pages/Admin/RiwayatDaftarLaporan"));
+const RiwayatDaftarLaporanBSTI = lazy(() => import("./pages/Bsti/RiwayatDaftarLaporan"));
+const DaftarLaporanBSTI = lazy(() => import("./pages/Bsti/DaftarLaporan"));
+
 
 function App() {
   return (
@@ -25,11 +29,13 @@ function App() {
             <Route path="/admin/daftar-laporan" element={<DaftarLaporan />} />
             <Route path="/admin/user" element={<User />} />
             <Route path="/admin/riwayat-daftar-laporan" element={<RiwayatDaftarLaporan />} />
+            <Route path="/admin/faq" element={<Faq />} />
           </Route>
           <Route path="/bsti" element={<BstiLayout />}>
             {/* Rute untuk Halaman Admin */}
             <Route index element={<DashboardBsti />} />
-            <Route path="/bsti/laporanpengaduan" element={<LaporanPengaduan />} />
+            <Route path="/bsti/daftar-laporan" element={<DaftarLaporanBSTI />} />
+            <Route path="/bsti/riwayat-daftar-laporan" element={<RiwayatDaftarLaporanBSTI />} />
           </Route>
         </Routes>
       </Suspense>

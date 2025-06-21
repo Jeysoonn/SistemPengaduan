@@ -1,48 +1,48 @@
 import React, { useState, useEffect } from "react";
-import { userAPI } from "../../service/apiUser";
 import Breadcrumb from "../../component/Breadcrumb";
+import { userAPI } from "../../service/apiUser";
 
-export default function Laporan() {
+export default function User() {
   const [userList, setUserList] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [activeFilter, setActiveFilter] = useState("Semua");
   const [formData, setFormData] = useState({
     nama: "",
     email: "",
     role: "",
     password: ""
   });
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [selectedUser, setSelectedUser] = useState(null);
-  const [activeTab, setActiveTab] = useState("Semua");
-  const roleTabs = ["Semua", "Mahasiswa", "Bsti", "Admin", "Security", "Baak"];
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setLoading(true);
         const data = await userAPI.fetchUser();
-        if (Array.isArray(data)) {
-          setUserList(data);
-        } else {
-          console.error("Data yang diterima bukan array:", data);
-        }
-        setLoading(false);
+        console.log("Data user setelah fetch:", data);
+        setUserList(data);
+        setError(null);
       } catch (error) {
         console.error("Error fetching data:", error);
+        setError("Gagal memuat data user. Silakan coba lagi.");
+      } finally {
         setLoading(false);
       }
     };
+
     fetchData();
   }, []);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value
-    });
-  };
+  const roleFilters = ["Semua", "Mahasiswa", "Bsti", "Admin", "Security", "Baak"];
 
-  const handleEditModalOpen = (user) => {
+  const filteredUsers = activeFilter === "Semua"
+    ? userList
+    : userList.filter(user => user.role === activeFilter);
+
+  const handleModalOpen = (user) => {
+    console.log("Membuka modal untuk user:", user);
     setSelectedUser(user);
     setFormData({
       nama: user.nama,
@@ -51,62 +51,96 @@ export default function Laporan() {
       password: ""
     });
     setIsEditModalOpen(true);
+    setError(null);
   };
 
-  const handleEditModalClose = () => {
+  const handleModalClose = () => {
     setIsEditModalOpen(false);
     setSelectedUser(null);
+    setError(null);
   };
 
-  const handleEditSubmit = async (e) => {
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      setLoading(true);
+      
       const payload = { ...formData };
       if (!payload.password) {
         delete payload.password;
       }
-      await userAPI.updateUser(selectedUser.id_user, payload);
+  
+      console.log("Mengirim data update:", {
+        id_user: selectedUser.user_id,
+        payload
+      });
+      
+      await userAPI.updateUser(selectedUser.user_id, payload);
+      
       const updatedData = await userAPI.fetchUser();
       setUserList(updatedData);
-      handleEditModalClose();
+      handleModalClose();
     } catch (error) {
       console.error("Error updating user:", error);
+      setError(error.response?.data?.message || "Gagal memperbarui user. Silakan coba lagi.");
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleDelete = async (id) => {
-    if (window.confirm("Apakah Anda yakin ingin menghapus user ini?")) {
-      try {
-        await userAPI.deleteUser(id);
-        const updatedData = await userAPI.fetchUser();
-        setUserList(updatedData);
-      } catch (error) {
-        console.error("Error deleting user:", error);
-      }
+  const handleDelete = async (user_id) => {
+    if (!window.confirm("Apakah Anda yakin ingin menghapus user ini?")) return;
+
+    try {
+      setLoading(true);
+      console.log("Menghapus user dengan ID:", user_id);
+      await userAPI.deleteUser(user_id);
+      
+      setUserList(prev => prev.filter(user => user.user_id !== user_id));
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      setError("Gagal menghapus user. Silakan coba lagi.");
+      const freshData = await userAPI.fetchUser();
+      setUserList(freshData);
+    } finally {
+      setLoading(false);
     }
   };
-
-  // Filter userList berdasarkan tab
-  const filteredUserList = activeTab === "Semua"
-    ? userList
-    : userList.filter(user => user.role && user.role.toLowerCase() === activeTab.toLowerCase());
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex justify-center items-center h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    );
   }
 
   return (
-    <div className="container mx-auto p-4 text-gray-900">
-      <h2 className="text-2xl font-semibold mt-6 mb-4">Tabel User</h2>
-      <Breadcrumb />
-      {/* Tabs Role */}
-      <div className="flex space-x-2 mb-4 overflow-x-auto">
-        {roleTabs.map((role) => (
+    <div className="container mx-auto p-4">
+      <h1 className="text-black text-2xl font-bold mb-4">Tabel User</h1>
+      <Breadcrumb items={["Home", "Dashboard", "User"]} />
+
+      {error && (
+        <div className="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+          {error}
+        </div>
+      )}
+
+      <div className="flex space-x-2 mb-4 overflow-x-auto pb-2">
+        {roleFilters.map((role) => (
           <button
             key={role}
-            onClick={() => setActiveTab(role)}
-            className={`px-4 py-2 rounded-md text-sm font-medium whitespace-nowrap ${
-              activeTab === role
+            onClick={() => setActiveFilter(role)}
+            className={`px-3 py-1 rounded-md text-xs font-medium whitespace-nowrap ${
+              activeFilter === role
                 ? "bg-blue-500 text-white"
                 : "bg-gray-200 text-gray-700 hover:bg-gray-300"
             }`}
@@ -115,135 +149,180 @@ export default function Laporan() {
           </button>
         ))}
       </div>
-      <div className="overflow-x-auto">
-        <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
-          <thead className="bg-gray-100">
-            <tr>
-              <th className="px-4 py-2 text-left text-sm font-medium text-gray-600">ID User</th>
-              <th className="px-4 py-2 text-left text-sm font-medium text-gray-600">Nama</th>
-              <th className="px-4 py-2 text-left text-sm font-medium text-gray-600">Email</th>
-              <th className="px-4 py-2 text-left text-sm font-medium text-gray-600">Role</th>
-              <th className="px-4 py-2 text-left text-sm font-medium text-gray-600">Aksi</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredUserList.length > 0 ? (
-              filteredUserList.map((user) => (
-                <tr key={user.id_user} className="border-t border-gray-200">
-                  <td className="px-4 py-2 text-sm text-gray-700">{user.id_user}</td>
-                  <td className="px-4 py-2 text-sm text-gray-700">{user.nama}</td>
-                  <td className="px-4 py-2 text-sm text-gray-700">{user.email}</td>
-                  <td className="px-4 py-2 text-sm text-gray-700">{user.role}</td>
-                  <td className="px-4 py-2 text-sm text-gray-700">
-                    <div className="flex space-x-2">
+
+      <div className="bg-white rounded-lg shadow overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">No</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {filteredUsers.length > 0 ? (
+                filteredUsers.map((user, index) => (
+                  <tr key={user.user_id} className="hover:bg-gray-50 transition-colors duration-150">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                      {index + 1}
+                    </td>
+                    <td className="px-6 py-4 whitespace-normal text-sm text-gray-700">
+                      {user.nama}
+                    </td>
+                    <td className="px-6 py-4 whitespace-normal text-sm text-gray-700">
+                      {user.email}
+                    </td>
+                    <td className="px-6 py-4 whitespace-normal text-sm text-gray-700">
+                      {user.role}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
                       <button
-                        onClick={() => handleEditModalOpen(user)}
-                        className="px-3 py-1 text-white bg-yellow-500 hover:bg-yellow-600 rounded"
+                        onClick={() => handleModalOpen(user)}
+                        className="text-yellow-600 hover:text-yellow-900 transition-colors duration-200"
+                        title="Edit"
                       >
-                        Edit
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        </svg>
                       </button>
                       <button
-                        onClick={() => handleDelete(user.id_user)}
-                        className="px-3 py-1 text-white bg-red-500 hover:bg-red-600 rounded"
+                        onClick={() => handleDelete(user.user_id)}
+                        className="text-red-600 hover:text-red-900 transition-colors duration-200"
+                        title="Hapus"
                       >
-                        Hapus
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
                       </button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="5" className="px-6 py-4 text-center text-sm text-gray-500">
+                    <div className="flex flex-col items-center justify-center py-8">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      <p className="mt-2 text-gray-600">Tidak ada user</p>
                     </div>
                   </td>
                 </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="5" className="px-4 py-2 text-sm text-gray-700 text-center">
-                  Tidak ada data untuk ditampilkan.
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {/* Edit Modal */}
       {isEditModalOpen && selectedUser && (
-        <div className="fixed inset-0 bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
-            <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
-              <h3 className="text-xl font-semibold text-gray-800">Edit User</h3>
-              <button onClick={handleEditModalClose} className="text-gray-500 hover:text-gray-700 focus:outline-none">
-                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-lg shadow-xl w-full max-w-md">
+            <div className="flex justify-between items-center border-b px-6 py-4">
+              <h3 className="text-lg font-medium text-black">
+                Edit User
+              </h3>
+              <button
+                onClick={handleModalClose}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                &times;
               </button>
             </div>
-            <div className="px-6 py-4">
-              <form className="space-y-4" onSubmit={handleEditSubmit}>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">Nama</label>
-                  <input
-                    type="text"
-                    name="nama"
-                    value={formData.nama}
-                    onChange={handleChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md"
-                    required
-                  />
+
+            <form onSubmit={handleSubmit} className="p-6">
+              <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="nama">
+                  Nama
+                </label>
+                <input
+                  type="text"
+                  id="nama"
+                  name="nama"
+                  value={formData.nama}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border rounded shadow appearance-none text-black"
+                  required
+                />
+              </div>
+
+              <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border rounded shadow appearance-none text-black"
+                  required
+                />
+              </div>
+
+              <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="role">
+                  Role
+                </label>
+                <select
+                  id="role"
+                  name="role"
+                  value={formData.role}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border rounded shadow appearance-none text-black"
+                  required
+                >
+                  <option value="">Pilih Role</option>
+                  <option value="Mahasiswa">Mahasiswa</option>
+                  <option value="Bsti">Bsti</option>
+                  <option value="Admin">Admin</option>
+                  <option value="Security">Security</option>
+                  <option value="Baak">Baak</option>
+                </select>
+              </div>
+
+              <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
+                  Password (Opsional)
+                </label>
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border rounded shadow appearance-none text-black"
+                  placeholder="Kosongkan jika tidak ingin mengubah password"
+                />
+              </div>
+
+              {error && (
+                <div className="mb-4 p-2 bg-red-100 border border-red-400 text-red-700 text-sm rounded">
+                  {error}
                 </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">Email</label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">Role</label>
-                  <select
-                    name="role"
-                    value={formData.role}
-                    onChange={handleChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md"
-                    required
-                  >
-                    <option value="">Pilih Role</option>
-                    <option value="Mahasiswa">Mahasiswa</option>
-                    <option value="Bsti">Bsti</option>
-                    <option value="Admin">Admin</option>
-                    <option value="Security">Security</option>
-                    <option value="Baak">Baak</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">Password (Opsional)</label>
-                  <input
-                    type="password"
-                    name="password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md"
-                    placeholder="Kosongkan jika tidak ingin mengubah password"
-                  />
-                </div>
-                <div className="flex justify-end space-x-3 pt-2">
-                  <button
-                    type="button"
-                    onClick={handleEditModalClose}
-                    className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
-                  >
-                    Batal
-                  </button>
-                  <button
-                    type="submit"
-                    className="px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700"
-                  >
-                    Simpan
-                  </button>
-                </div>
-              </form>
-            </div>
+              )}
+
+              <div className="flex justify-end">
+                <button
+                  type="button"
+                  onClick={handleModalClose}
+                  className="mr-2 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded"
+                >
+                  Batal
+                </button>
+                <button
+                  type="submit"
+                  className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+                  disabled={loading}
+                >
+                  {loading ? "Menyimpan..." : "Simpan Perubahan"}
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}
