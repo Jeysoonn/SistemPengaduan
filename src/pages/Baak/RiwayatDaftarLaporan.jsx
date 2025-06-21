@@ -25,7 +25,7 @@ export default function RiwayatDaftarLaporan() {
         const data = await pengaduanAPI.fetchPengaduan();
         if (Array.isArray(data)) {
           setPengaduanList(data.filter(item => 
-            item.tujuan_laporan === "BSTI" && item.status === "Selesai"
+            item.tujuan_laporan === "Baak" && item.status === "Selesai"
           ));
         } else {
           console.error("Data yang diterima bukan array:", data);
@@ -94,7 +94,7 @@ export default function RiwayatDaftarLaporan() {
       console.error("Full deletion error:", error);
       const freshData = await pengaduanAPI.fetchPengaduan();
       setPengaduanList(freshData.filter(item => 
-        item.tujuan_laporan === "BSTI" && item.status === "Selesai"
+        item.tujuan_laporan === "Baak" && item.status === "Selesai"
       ));
       alert(`Gagal menghapus: ${error.message}`);
     }

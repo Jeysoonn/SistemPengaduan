@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useUser } from "../../context/UserContext";
 import logo from "../../assets/logo.png";  // Correct logo import
 
 export default function Header() {
   const location = useLocation();
   const navigate = useNavigate();
+  const { user, logout, isAuthenticated } = useUser();
 
   // Active section tracking
   const [activeSection, setActiveSection] = useState("");
@@ -13,9 +15,9 @@ export default function Header() {
   useEffect(() => {
     // Dynamically set active section based on location
     const path = location.pathname;
-    if (path === "/") setActiveSection("home");
+    if (path === "/home") setActiveSection("home");
     else if (path === "/formulir") setActiveSection("formulir");
-    // else if (path === "/riwayat") setActiveSection("riwayat");
+    else if (path === "/riwayat") setActiveSection("riwayat");
     else setActiveSection(""); // Reset if no match
   }, [location.pathname]);
 
@@ -30,6 +32,11 @@ export default function Header() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const handleLogout = () => {
+    logout();
+    navigate("/auth/login");
+  };
 
   // Menu item component
   const ListHeader = ({ title, href, isActive }) => {
@@ -94,14 +101,33 @@ export default function Header() {
               </li>
             </ul>
 
-            {/* Auth Button */}
+            {/* Auth Section */}
             <div className="flex items-center gap-3">
-              <button
-                onClick={() => navigate("/auth/login")}
-                className="bg-[#1e7da0] text-white px-8 py-2 font-bold rounded-lg text-x2 shadow-md hover:shadow-lg transition-shadow duration-300"
-              >
-                Login
-              </button>
+              {isAuthenticated() ? (
+                <div className="flex items-center gap-3">
+                  <div className="text-right">
+                    <p className="text-sm font-semibold text-gray-800">
+                      {user ? user.nama || user.email : "User"}
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      {user ? user.role : "Role"}
+                    </p>
+                  </div>
+                  <button
+                    onClick={handleLogout}
+                    className="bg-red-500 text-white px-6 py-2 font-bold rounded-lg text-sm shadow-md hover:bg-red-600 transition-colors duration-300"
+                  >
+                    Logout
+                  </button>
+                </div>
+              ) : (
+                <button
+                  onClick={() => navigate("/auth/login")}
+                  className="bg-[#1e7da0] text-white px-8 py-2 font-bold rounded-lg text-x2 shadow-md hover:shadow-lg transition-shadow duration-300"
+                >
+                  Login
+                </button>
+              )}
             </div>
           </div>
         </div>

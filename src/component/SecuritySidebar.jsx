@@ -6,26 +6,26 @@ import {
   Send,
   LogOut,
   Rocket,
-  Users,
+  Shield,
 } from "lucide-react";
 
-const Sidebar = () => {
+const SecuritySidebar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, logout } = useUser();
   const [laporanOpen, setLaporanOpen] = useState(
-    location.pathname.startsWith("/bsti/daftar-laporan") || location.pathname.startsWith("/bsti/riwayat-daftar-laporan")
+    location.pathname.startsWith("/security/daftar-laporan") || location.pathname.startsWith("/security/riwayat-daftar-laporan")
   );
 
   const menus = [
-    { icon: Home, name: "Beranda", path: "/bsti/" },
+    { icon: Home, name: "Beranda", path: "/security/" },
     {
       icon: Send,
       name: "Laporan",
-      path: "/bsti/daftar-laporan",
+      path: "/security/daftar-laporan",
       dropdown: [
-        { name: "Daftar Laporan", path: "/bsti/daftar-laporan" },
-        { name: "Riwayat Laporan", path: "/bsti/riwayat-daftar-laporan" },
+        { name: "Daftar Laporan", path: "/security/daftar-laporan" },
+        { name: "Riwayat Laporan", path: "/security/riwayat-daftar-laporan" },
       ],
     },
   ];
@@ -144,4 +144,4 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar;
+export default SecuritySidebar; 

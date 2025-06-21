@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { userAPI } from "../../service/apiUser";  // Import notesAPI untuk mengambil data pengguna
-import { useNavigate } from "react-router-dom";  // Untuk navigasi setelah login
+import { userAPI } from "../../service/apiUser";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useUser } from "../../context/UserContext";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -8,7 +9,12 @@ export default function Login() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const navigate = useNavigate();  // Hook untuk navigasi setelah login
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { login } = useUser();
+
+  // Get the intended destination from location state
+  const from = location.state?.from?.pathname || "/";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,7 +28,7 @@ export default function Login() {
     }
 
     try {
-      // Cek data login ke API menggunakan notesAPI
+      // Cek data login ke API menggunakan userAPI
       const users = await userAPI.fetchUser();
 
       // Mencari pengguna berdasarkan email
@@ -31,11 +37,20 @@ export default function Login() {
       );
 
       if (user) {
+        // Store user data in context and localStorage
+        login(user);
+        
         // Setelah login berhasil, periksa role pengguna dan arahkan ke halaman yang sesuai
         if (user.role === "Admin") {
-          navigate("/admin");  // Jika admin, arahkan ke dashboard admin
+          navigate("/admin");
+        } else if (user.role === "BSTI") {
+          navigate("/bsti");
         } else if (user.role === "Mahasiswa") {
-          navigate("/home");  // Jika user biasa, arahkan ke dashboard user
+          navigate("/home");
+        } else if (user.role === "Security") {
+          navigate("/security");
+        } else if (user.role === "BAAK") {
+          navigate("/baak");
         } else {
           setError("Unknown role");
         }
@@ -63,10 +78,10 @@ export default function Login() {
           <input
             type="email"
             placeholder="Email"
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400"
+            className="w-full px-4 text-black py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            disabled={loading}  // Menonaktifkan input saat loading
+            disabled={loading}
           />
           <p className="text-xs text-gray-500 mt-1">
             Masukkan email yang valid, misalnya: <em>name@example.com</em>
@@ -78,10 +93,10 @@ export default function Login() {
           <input
             type="password"
             placeholder="Password"
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400"
+            className="w-full px-4 text-black py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            disabled={loading}  // Menonaktifkan input saat loading
+            disabled={loading}
           />
           <p className="text-xs text-gray-500 mt-1">
             Minimal 8 karakter, disarankan kombinasi huruf & angka
@@ -97,7 +112,7 @@ export default function Login() {
         <button
           type="submit"
           className="w-full py-2 bg-blue-500 text-white font-semibold rounded-full hover:bg-blue-600 transition font-poppins"
-          disabled={loading}  // Menonaktifkan tombol saat loading
+          disabled={loading}
         >
           {loading ? "Logging in..." : "LOG IN"}
         </button>

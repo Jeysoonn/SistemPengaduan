@@ -35,7 +35,7 @@ export default function User() {
     fetchData();
   }, []);
 
-  const roleFilters = ["Semua", "Mahasiswa", "Bsti", "Admin", "Security", "Baak"];
+  const roleFilters = ["Semua", "Mahasiswa", "BSTI", "Admin", "Security", "BAAK"];
 
   const filteredUsers = activeFilter === "Semua"
     ? userList
@@ -79,11 +79,11 @@ export default function User() {
       }
   
       console.log("Mengirim data update:", {
-        id_user: selectedUser.user_id,
+        id_user: selectedUser.id_user,
         payload
       });
       
-      await userAPI.updateUser(selectedUser.user_id, payload);
+      await userAPI.updateUser(selectedUser.id_user, payload);
       
       const updatedData = await userAPI.fetchUser();
       setUserList(updatedData);
@@ -96,15 +96,15 @@ export default function User() {
     }
   };
 
-  const handleDelete = async (user_id) => {
+  const handleDelete = async (id_user) => {
     if (!window.confirm("Apakah Anda yakin ingin menghapus user ini?")) return;
 
     try {
       setLoading(true);
-      console.log("Menghapus user dengan ID:", user_id);
-      await userAPI.deleteUser(user_id);
+      console.log("Menghapus user dengan ID:", id_user);
+      await userAPI.deleteUser(id_user);
       
-      setUserList(prev => prev.filter(user => user.user_id !== user_id));
+      setUserList(prev => prev.filter(user => user.id_user !== id_user));
     } catch (error) {
       console.error("Error deleting user:", error);
       setError("Gagal menghapus user. Silakan coba lagi.");
@@ -165,7 +165,7 @@ export default function User() {
             <tbody className="bg-white divide-y divide-gray-200">
               {filteredUsers.length > 0 ? (
                 filteredUsers.map((user, index) => (
-                  <tr key={user.user_id} className="hover:bg-gray-50 transition-colors duration-150">
+                  <tr key={user.id_user} className="hover:bg-gray-50 transition-colors duration-150">
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                       {index + 1}
                     </td>
@@ -189,7 +189,7 @@ export default function User() {
                         </svg>
                       </button>
                       <button
-                        onClick={() => handleDelete(user.user_id)}
+                        onClick={() => handleDelete(user.id_user)}
                         className="text-red-600 hover:text-red-900 transition-colors duration-200"
                         title="Hapus"
                       >
@@ -278,10 +278,10 @@ export default function User() {
                 >
                   <option value="">Pilih Role</option>
                   <option value="Mahasiswa">Mahasiswa</option>
-                  <option value="Bsti">Bsti</option>
+                  <option value="BSTI">BSTI</option>
                   <option value="Admin">Admin</option>
                   <option value="Security">Security</option>
-                  <option value="Baak">Baak</option>
+                  <option value="BAAK">BAAK</option>
                 </select>
               </div>
 

@@ -6,26 +6,26 @@ import {
   Send,
   LogOut,
   Rocket,
-  Users,
+  Building,
 } from "lucide-react";
 
-const Sidebar = () => {
+const BAAKSidebar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, logout } = useUser();
   const [laporanOpen, setLaporanOpen] = useState(
-    location.pathname.startsWith("/bsti/daftar-laporan") || location.pathname.startsWith("/bsti/riwayat-daftar-laporan")
+    location.pathname.startsWith("/baak/daftar-laporan") || location.pathname.startsWith("/baak/riwayat-daftar-laporan")
   );
 
   const menus = [
-    { icon: Home, name: "Beranda", path: "/bsti/" },
+    { icon: Home, name: "Beranda", path: "/baak/" },
     {
       icon: Send,
       name: "Laporan",
-      path: "/bsti/daftar-laporan",
+      path: "/baak/daftar-laporan",
       dropdown: [
-        { name: "Daftar Laporan", path: "/bsti/daftar-laporan" },
-        { name: "Riwayat Laporan", path: "/bsti/riwayat-daftar-laporan" },
+        { name: "Daftar Laporan", path: "/baak/daftar-laporan" },
+        { name: "Riwayat Laporan", path: "/baak/riwayat-daftar-laporan" },
       ],
     },
   ];
@@ -144,4 +144,4 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar;
+export default BAAKSidebar; 

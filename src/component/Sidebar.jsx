@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useUser } from "../context/UserContext";
 import {
   Home,
   Send,
@@ -7,28 +8,52 @@ import {
   Rocket,
   Users,
   HelpCircle,
+  GraduationCap,
 } from "lucide-react";
 
 const Sidebar = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, logout } = useUser();
   const [laporanOpen, setLaporanOpen] = useState(
     location.pathname.startsWith("/admin/daftar-laporan") || location.pathname.startsWith("/admin/riwayat-daftar-laporan")
   );
 
-  const menus = [
-    { icon: Home, name: "Beranda", path: "/admin/" },
-    {
-      icon: Send,
-      name: "Laporan",
-      path: "/admin/daftar-laporan",
-      dropdown: [
-        { name: "Daftar Laporan", path: "/admin/daftar-laporan" },
-        { name: "Riwayat Laporan", path: "/admin/riwayat-daftar-laporan" },
-      ],
-    },
-    { icon: Users, name: "User", path: "/admin/user" },
-    { icon: HelpCircle, name: "FAQ", path: "/admin/faq" },
-  ];
+  // Define menus based on user role
+  const getMenus = () => {
+    const baseMenus = [
+      { icon: Home, name: "Beranda", path: "/admin/" },
+      {
+        icon: Send,
+        name: "Laporan",
+        path: "/admin/daftar-laporan",
+        dropdown: [
+          { name: "Daftar Laporan", path: "/admin/daftar-laporan" },
+          { name: "Riwayat Laporan", path: "/admin/riwayat-daftar-laporan" },
+        ],
+      },
+      { icon: HelpCircle, name: "FAQ", path: "/admin/faq" },
+    ];
+
+    // Only Admin can access User management
+    if (user && user.role === "Admin") {
+      baseMenus.splice(2, 0, { icon: Users, name: "User", path: "/admin/user" });
+    }
+
+    // Only Admin can access Mahasiswa view
+    if (user && user.role === "Admin") {
+      baseMenus.push({ icon: GraduationCap, name: "Mahasiswa", path: "/home" });
+    }
+
+    return baseMenus;
+  };
+
+  const menus = getMenus();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/auth/login");
+  };
 
   return (
     <div className="w-64 min-h-screen bg-white shadow-lg flex flex-col justify-between">
@@ -116,11 +141,21 @@ const Sidebar = () => {
             className="w-10 h-10 rounded-full object-cover border-2 border-blue-300"
           />
           <div>
-            <p className="text-sm font-semibold text-gray-800">John Doe</p>
-            <p className="text-xs text-gray-500">johndoe@email.com</p>
+            <p className="text-sm font-semibold text-gray-800">
+              {user ? user.nama || user.email : "User"}
+            </p>
+            <p className="text-xs text-gray-500">
+              {user ? user.email : "user@email.com"}
+            </p>
+            <p className="text-xs text-blue-600 font-medium">
+              {user ? user.role : "Role"}
+            </p>
           </div>
         </div>
-        <button className="flex items-center gap-3 w-full px-4 py-2 rounded-md text-red-600 hover:bg-red-100 transition-all">
+        <button 
+          onClick={handleLogout}
+          className="flex items-center gap-3 w-full px-4 py-2 rounded-md text-red-600 hover:bg-red-100 transition-all"
+        >
           <LogOut size={18} />
           <span className="text-sm font-medium">Keluar</span>
         </button>

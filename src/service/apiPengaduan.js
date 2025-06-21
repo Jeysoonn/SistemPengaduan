@@ -28,6 +28,19 @@ export const pengaduanAPI = {
     }
   },
 
+  // Get last pengaduan for ID generation
+  async fetchLastPengaduan() {
+    try {
+      const response = await axios.get(`${API_URL}?order=id_pengaduan.desc&limit=1`, { 
+        headers 
+      });
+      return response.data || [];
+    } catch (error) {
+      console.error("Error fetching last pengaduan:", error);
+      return [];
+    }
+  },
+
   // Create a new pengaduan
   async createPengaduan(data) {
     try {

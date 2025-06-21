@@ -35,7 +35,7 @@ export default function Laporan() {
         const data = await pengaduanAPI.fetchPengaduan();
         if (Array.isArray(data)) {
           setPengaduanList(data.filter(item => 
-            item.tujuan_laporan === "BSTI" && item.status !== "Selesai"
+            item.tujuan_laporan === "Security" && item.status !== "Selesai"
           ));
         } else {
           console.error("Data yang diterima bukan array:", data);
@@ -60,8 +60,8 @@ export default function Laporan() {
     fetchUsers();
   }, []);
 
-  // Filter hanya untuk BSTI
-  const filteredPengaduan = pengaduanList.filter(item => item.tujuan_laporan === "BSTI");
+  // Filter hanya untuk Security
+  const filteredPengaduan = pengaduanList.filter(item => item.tujuan_laporan === "Security");
 
   const handleModalOpen = async (pengaduan) => {
     setSelectedPengaduan(pengaduan);
@@ -118,7 +118,7 @@ export default function Laporan() {
 
       const updatedData = await pengaduanAPI.fetchPengaduan();
       setPengaduanList(updatedData.filter(item => 
-        item.tujuan_laporan === "BSTI" && item.status !== "Selesai"
+        item.tujuan_laporan === "Security" && item.status !== "Selesai"
       ));
       handleModalClose();
     } catch (error) {
@@ -159,7 +159,7 @@ export default function Laporan() {
       await pengaduanAPI.updatePengaduan(selectedPengaduan.id_pengaduan, editFormData);
       const updatedData = await pengaduanAPI.fetchPengaduan();
       setPengaduanList(updatedData.filter(item => 
-        item.tujuan_laporan === "BSTI" && item.status !== "Selesai"
+        item.tujuan_laporan === "Security" && item.status !== "Selesai"
       ));
       handleEditModalClose();
       // Show success message
@@ -186,7 +186,7 @@ export default function Laporan() {
       // Rollback optimistic update
       const freshData = await pengaduanAPI.fetchPengaduan();
       setPengaduanList(freshData.filter(item => 
-        item.tujuan_laporan === "BSTI" && item.status !== "Selesai"
+        item.tujuan_laporan === "Security" && item.status !== "Selesai"
       ));
 
       alert(`Gagal menghapus: ${error.message}`);
