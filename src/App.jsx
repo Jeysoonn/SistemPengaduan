@@ -13,11 +13,11 @@ const User = lazy(() => import("./pages/Admin/User"));
 const AdminLayout = lazy(() => import("./layout/AdminLayout"));
 const BstiLayout = lazy(() => import("./layout/BSTILayout"));
 const SecurityLayout = lazy(() => import("./layout/SecurityLayout"));
-// const BAAKLayout = lazy(() => import("./layout/BAAKLayout"));
+const BAAKLayout = lazy(() => import("./layout/BaaKLayout"));
 
 const DashboardBsti = lazy(() => import("./pages/Bsti/Dashboard"));
 const DashboardSecurity = lazy(() => import("./pages/Security/Dashboard"));
-const DashboardBAAK = lazy(() => import("./pages/BAAK/Dashboard"));
+const DashboardBAAK = lazy(() => import("./pages/Baak/Dashboard"));
 
 const LaporanPengaduan = lazy(() => import("./pages/Bsti/LaporanPengaduan"));
 const RiwayatDaftarLaporan = lazy(() => import("./pages/Admin/RiwayatDaftarLaporan"));
@@ -38,8 +38,8 @@ const DaftarLaporanBSTI = lazy(() => import("./pages/Bsti/DaftarLaporan"));
 const RiwayatDaftarLaporanSecurity = lazy(() => import("./pages/Security/RiwayatDaftarLaporan"));
 const DaftarLaporanSecurity = lazy(() => import("./pages/Security/DaftarLaporan"));
 
-const RiwayatDaftarLaporanBAAK = lazy(() => import("./pages/BAAK/RiwayatDaftarLaporan"));
-const DaftarLaporanBAAK = lazy(() => import("./pages/BAAK/DaftarLaporan"));
+const RiwayatDaftarLaporanBAAK = lazy(() => import("./pages/Baak/RiwayatDaftarLaporan"));
+const DaftarLaporanBAAK = lazy(() => import("./pages/Baak/DaftarLaporan"));
 
 function App() {
   return (
@@ -83,15 +83,15 @@ function App() {
             </Route>
 
             {/* BAAK Routes - Only accessible by BAAK users */}
-            {/* <Route path="/baak" element={
+            <Route path="/baak" element={
               <ProtectedRoute allowedRoles={['BAAK']}>
                 <BAAKLayout />
               </ProtectedRoute>
-            }> */}
-              {/* <Route index element={<DashboardBAAK />} />
+            }>
+              <Route index element={<DashboardBAAK />} />
               <Route path="/baak/daftar-laporan" element={<DaftarLaporanBAAK />} />
               <Route path="/baak/riwayat-daftar-laporan" element={<RiwayatDaftarLaporanBAAK />} />
-            </Route> */}
+            </Route>
 
             {/* Auth Routes - No authentication required */}
             <Route path="/auth" element={
