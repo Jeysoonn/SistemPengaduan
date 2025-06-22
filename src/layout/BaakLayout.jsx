@@ -1,8 +1,8 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import BAAKSidebar from "../component/BAAKSidebar";
+import BAAKSidebar from "../component/SidebarBaak";
 
-export default function BAAKLayout() {
+export default function BaakLayout() {
   return (
     <div className="flex bg-gray-50">
       <BAAKSidebar />

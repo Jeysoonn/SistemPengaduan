@@ -13,7 +13,7 @@ const User = lazy(() => import("./pages/Admin/User"));
 const AdminLayout = lazy(() => import("./layout/AdminLayout"));
 const BstiLayout = lazy(() => import("./layout/BSTILayout"));
 const SecurityLayout = lazy(() => import("./layout/SecurityLayout"));
-const BAAKLayout = lazy(() => import("./layout/BaaKLayout"));
+const BAAKLayout = lazy(() => import("./layout/BaakLayout"));
 
 const DashboardBsti = lazy(() => import("./pages/Bsti/Dashboard"));
 const DashboardSecurity = lazy(() => import("./pages/Security/Dashboard"));
