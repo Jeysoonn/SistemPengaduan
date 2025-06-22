@@ -88,10 +88,10 @@ function App() {
                 <BAAKLayout />
               </ProtectedRoute>
             }> */}
-              <Route index element={<DashboardBAAK />} />
+              {/* <Route index element={<DashboardBAAK />} />
               <Route path="/baak/daftar-laporan" element={<DaftarLaporanBAAK />} />
               <Route path="/baak/riwayat-daftar-laporan" element={<RiwayatDaftarLaporanBAAK />} />
-            </Route>
+            </Route> */}
 
             {/* Auth Routes - No authentication required */}
             <Route path="/auth" element={
