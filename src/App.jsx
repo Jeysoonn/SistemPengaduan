@@ -13,7 +13,7 @@ const User = lazy(() => import("./pages/Admin/User"));
 const AdminLayout = lazy(() => import("./layout/AdminLayout"));
 const BstiLayout = lazy(() => import("./layout/BSTILayout"));
 const SecurityLayout = lazy(() => import("./layout/SecurityLayout"));
-const BAAKLayout = lazy(() => import("./layout/BAAKLayout"));
+// const BAAKLayout = lazy(() => import("./layout/BAAKLayout"));
 
 const DashboardBsti = lazy(() => import("./pages/Bsti/Dashboard"));
 const DashboardSecurity = lazy(() => import("./pages/Security/Dashboard"));
@@ -83,11 +83,11 @@ function App() {
             </Route>
 
             {/* BAAK Routes - Only accessible by BAAK users */}
-            <Route path="/baak" element={
+            {/* <Route path="/baak" element={
               <ProtectedRoute allowedRoles={['BAAK']}>
                 <BAAKLayout />
               </ProtectedRoute>
-            }>
+            }> */}
               <Route index element={<DashboardBAAK />} />
               <Route path="/baak/daftar-laporan" element={<DaftarLaporanBAAK />} />
               <Route path="/baak/riwayat-daftar-laporan" element={<RiwayatDaftarLaporanBAAK />} />
