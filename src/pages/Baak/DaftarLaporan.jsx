@@ -35,7 +35,7 @@ export default function Laporan() {
         const data = await pengaduanAPI.fetchPengaduan();
         if (Array.isArray(data)) {
           setPengaduanList(data.filter(item => 
-            item.tujuan_laporan === "Baak" && item.status !== "Selesai"
+            item.tujuan_laporan === "BAAK" && item.status !== "Selesai"
           ));
         } else {
           console.error("Data yang diterima bukan array:", data);
@@ -311,7 +311,7 @@ export default function Laporan() {
 
       {/* Modal Tanggapan */}
       {isModalOpen && selectedPengaduan && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+        <div className="fixed inset-0 bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-lg shadow-xl w-full max-w-md">
             <div className="flex justify-between items-center border-b px-6 py-4">
               <h3 className="text-lg font-medium text-black">
@@ -396,7 +396,7 @@ export default function Laporan() {
 
       {/* Modal Edit */}
       {isEditModalOpen && selectedPengaduan && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+        <div className="fixed inset-0 bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-lg shadow-xl w-full max-w-md">
             <div className="flex justify-between items-center border-b px-6 py-4">
               <h3 className="text-lg font-medium text-black">

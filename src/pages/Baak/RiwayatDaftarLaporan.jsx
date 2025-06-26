@@ -25,7 +25,7 @@ export default function RiwayatDaftarLaporan() {
         const data = await pengaduanAPI.fetchPengaduan();
         if (Array.isArray(data)) {
           setPengaduanList(data.filter(item => 
-            item.tujuan_laporan === "Baak" && item.status === "Selesai"
+            item.tujuan_laporan === "BAAK" && item.status === "Selesai"
           ));
         } else {
           console.error("Data yang diterima bukan array:", data);
