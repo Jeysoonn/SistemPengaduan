@@ -13,20 +13,22 @@ const headers = {
 
 export const pengaduanAPI = {
   // Fetch all pengaduan data
-  async fetchPengaduan() {
-    try {
-      const response = await axios.get(API_URL, { headers });
-      if (Array.isArray(response.data)) {
-        return response.data;
-      } else {
-        console.error("Data yang diterima bukan array:", response.data);
-        return [];
-      }
-    } catch (error) {
-      console.error("Error fetching data:", error);
+  // pengaduanAPI.js
+async fetchPengaduan() {
+  try {
+    const response = await axios.get(`${API_URL}?select=*,User(nama)`, { headers });
+    if (Array.isArray(response.data)) {
+      return response.data;
+    } else {
+      console.error("Data yang diterima bukan array:", response.data);
       return [];
     }
-  },
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    return [];
+  }
+},
+
 
   // Get last pengaduan for ID generation
   async fetchLastPengaduan() {

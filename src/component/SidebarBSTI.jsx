@@ -5,9 +5,8 @@ import {
   Home,
   Send,
   LogOut,
-  Rocket,
-  Users,
 } from "lucide-react";
+import logoLapor from "../assets/logoLapor.png";
 
 const Sidebar = () => {
   const location = useLocation();
@@ -36,12 +35,16 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="w-64 min-h-screen bg-white shadow-lg flex flex-col justify-between">
+    <div className="w-64 min-h-screen bg-white shadow-md flex flex-col justify-between">
       {/* Logo dan Menu */}
       <div className="p-6">
         <div className="flex items-center gap-3 mb-10">
-          <Rocket size={28} className="text-black" />
-          <span className="text-2xl font-bold text-black">Lapor - PCR</span>
+          <img
+            src={logoLapor}
+            alt="Logo"
+            className="w-10 h-10 object-contain"
+          />
+          <span className="text-2xl font-bold text-cyan-700">Lapor - PCR</span>
         </div>
 
         <ul className="space-y-2">
@@ -50,7 +53,6 @@ const Sidebar = () => {
             const isActive = location.pathname === item.path;
 
             if (item.dropdown) {
-              // Dropdown menu for Laporan
               const isDropdownActive = item.dropdown.some(sub => location.pathname === sub.path);
               return (
                 <li key={index}>
@@ -59,8 +61,8 @@ const Sidebar = () => {
                     onClick={() => setLaporanOpen((open) => !open)}
                     className={`flex items-center gap-4 px-4 py-3 rounded-lg text-base font-medium transition-all w-full text-left ${
                       isDropdownActive
-                        ? "bg-white text-black font-semibold shadow-md border border-gray-200"
-                        : "text-black hover:bg-gray-200"
+                        ? "bg-cyan-100 text-cyan-800 font-semibold"
+                        : "text-gray-700 hover:bg-cyan-50"
                     }`}
                   >
                     <Icon size={20} />
@@ -73,15 +75,15 @@ const Sidebar = () => {
                     </svg>
                   </button>
                   {laporanOpen && (
-                    <ul className="bg-white text-black font-semibold shadow-md border border-gray-200 rounded-lg mt-2 py-2 px-1">
+                    <ul className="pl-6 mt-2 space-y-1">
                       {item.dropdown.map((sub, subIdx) => (
                         <li key={subIdx}>
                           <Link
                             to={sub.path}
-                            className={`block px-4 py-2 rounded-md text-sm font-medium transition-all text-black ${
+                            className={`block px-4 py-2 rounded-md text-sm font-medium transition-all ${
                               location.pathname === sub.path
-                                ? "bg-blue-100 text-blue-700 font-semibold"
-                                : "text-black hover:bg-gray-200"
+                                ? "bg-cyan-100 text-cyan-800 font-semibold"
+                                : "text-gray-700 hover:bg-cyan-50"
                             }`}
                           >
                             {sub.name}
@@ -98,10 +100,11 @@ const Sidebar = () => {
               <li key={index}>
                 <Link
                   to={item.path}
-                  className={`flex items-center gap-4 px-4 py-3 rounded-lg text-base font-medium transition-all
-                    ${isActive
-                      ? "bg-white text-black font-semibold shadow-md border border-gray-200"
-                      : "text-black hover:bg-gray-200"}`}
+                  className={`flex items-center gap-4 px-4 py-3 rounded-lg text-base font-medium transition-all ${
+                    isActive
+                      ? "bg-cyan-100 text-cyan-800 font-semibold"
+                      : "text-gray-700 hover:bg-cyan-50"
+                  }`}
                 >
                   <Icon size={20} />
                   <span>{item.name}</span>
@@ -113,12 +116,12 @@ const Sidebar = () => {
       </div>
 
       {/* User Info & Logout */}
-      <div className="p-6 border-t border-gray-200">
+      <div className="p-6 border-t border-gray-100">
         <div className="flex items-center gap-3 mb-4">
           <img
             src="https://via.placeholder.com/40"
             alt="User"
-            className="w-10 h-10 rounded-full object-cover border-2 border-blue-300"
+            className="w-10 h-10 rounded-full object-cover border-2 border-cyan-400"
           />
           <div>
             <p className="text-sm font-semibold text-gray-800">
@@ -127,14 +130,14 @@ const Sidebar = () => {
             <p className="text-xs text-gray-500">
               {user ? user.email : "user@email.com"}
             </p>
-            <p className="text-xs text-blue-600 font-medium">
+            <p className="text-xs text-cyan-600 font-medium">
               {user ? user.role : "Role"}
             </p>
           </div>
         </div>
         <button 
           onClick={handleLogout}
-          className="flex items-center gap-3 w-full px-4 py-2 rounded-md text-red-600 hover:bg-red-100 transition-all"
+          className="flex items-center gap-3 w-full px-4 py-2 rounded-md text-red-600 hover:bg-red-50 transition-all"
         >
           <LogOut size={18} />
           <span className="text-sm font-medium">Keluar</span>

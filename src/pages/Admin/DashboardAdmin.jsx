@@ -3,7 +3,7 @@ import Breadcrumb from "../../component/Breadcrumb";
 export default function Dashboard() {
   // Data untuk Dashboard Cards
   const data = [
-    { title: "Total Sales", value: "$24,000", subtitle: "Since last week" },
+    { title: "Total Lapor", value: "$24,000", subtitle: "Since last week" },
     { title: "New Users", value: "180", subtitle: "Since last month" },
     { title: "Total Orders", value: "450", subtitle: "This month" },
   ];
