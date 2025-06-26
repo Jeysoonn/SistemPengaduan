@@ -1,14 +1,14 @@
 import React, { Suspense, lazy } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LoadingScreen from "./component/LoadingScreen";
-import AdminLayout from "./layout/AdminLayout";
-// import AdminLayout from "./layout/AdminLayout";
 
 const MahasiswaLayout = lazy(() => import("./layout/MahasiswaLayout"));
-// // Lazy load pages
-// const Beranda = lazy(() => import("./pages/Admin/Dashboard"));
-// const Statistik = lazy(() => import("./pages/Admin/Statistik"));
-// const Laporan = lazy(() => import("./pages/Admin/Laporan"));
+const Home = lazy(() => import("./pages/Mahasiswa/Home"));
+const About = lazy(() => import("./pages/Mahasiswa/About"));
+const Layanan = lazy(() => import("./pages/Mahasiswa/Layanan"));
+const Artikel = lazy(() => import("./pages/Mahasiswa/Artikel"));
+const Pengaduan = lazy(() => import("./pages/Mahasiswa/Pengaduan"));
+const FAQ = lazy(() => import("./pages/Mahasiswa/FAQ"));
 
 function App() {
   return (
@@ -17,7 +17,11 @@ function App() {
         <Routes>
           <Route element={<MahasiswaLayout />}>
           <Route path="/" element={<Home />} />
-          <Route path="/formulir" element={<Formulir />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/layanan" element={<Layanan />} />
+          <Route path="/artikel" element={<Artikel />} />
+          <Route path="/pengaduan" element={<Pengaduan />} />
+          <Route path="/faq" element={<FAQ />} />
           </Route>
 
           {/* <Route path="/" element={<MahasiswaLayout />}>
