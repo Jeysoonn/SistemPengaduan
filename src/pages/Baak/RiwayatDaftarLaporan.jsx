@@ -94,7 +94,7 @@ export default function RiwayatDaftarLaporan() {
       console.error("Full deletion error:", error);
       const freshData = await pengaduanAPI.fetchPengaduan();
       setPengaduanList(freshData.filter(item => 
-        item.tujuan_laporan === "Baak" && item.status === "Selesai"
+        item.tujuan_laporan === "BAAK" && item.status === "Selesai"
       ));
       alert(`Gagal menghapus: ${error.message}`);
     }
