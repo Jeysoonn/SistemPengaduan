@@ -1,20 +1,20 @@
 [
   {
     "id": 1,
-    "name": "Jason Angriawan",
+    "name": "Angriawan",
     "avatar": "https://avatar.iran.liara.run/public/43",
     "review": "Pengaduan saya direspon cepat! AC yang panas langsung diperbaiki."
   },
   {
     "id": 2,
-    "name": "Indah Ramadhani",
+    "name": "Ndaram",
     "avatar": "https://avatar.iran.liara.run/public/94",
     "review": "User interface-nya simpel dan mudah digunakan. Sangat recommended!"
   },
   {
     "id": 3,
-    "name": "Baldi Agus",
-    "avatar": "https://avatar.iran.liara.run/public/boy",
+    "name": "Agus",
+    "avatar": "https://avatar.iran.liara.run/public/43",
     "review": "Dulu malas lapor karena ribet, sekarang lewat sistem semua jadi praktis!"
   }
 ]

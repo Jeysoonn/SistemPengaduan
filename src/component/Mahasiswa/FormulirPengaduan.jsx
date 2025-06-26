@@ -114,7 +114,7 @@ export default function FormulirPengaduan() {
           <div className="text-center">
             <button
               type="submit"
-              className="bg-gradient-to-r from-[#1e7da0] to-[#2596be] hover:from-[#2596be] hover:to-[#1e7da0] text-white font-bold py-2 px-8 rounded-full shadow-lg transition duration-300"
+              className="bg-gradient-to-r from-[#34BBD1] to-[#2596be] hover:from-[#2596be] hover:to-[#1e7da0] text-white font-bold py-2 px-8 rounded-full shadow-lg transition duration-300"
             >
               LAPORKAN
             </button>

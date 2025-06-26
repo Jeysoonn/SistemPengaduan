@@ -16,7 +16,7 @@ export default function Footer() {
       <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-6">
 
         {/* Kontak */}
-        <div className="bg-white/95 text-[#1688c3] p-4 rounded-xl shadow-md space-y-4 text-sm w-full md:w-[230px]">
+        <div className="bg-white/95 text-[#34BBD1] p-4 rounded-xl shadow-md space-y-4 text-sm w-full md:w-[230px]">
           <div className="flex items-start gap-3">
             <FaPhoneAlt className="text-xl mt-1" />
             <div>

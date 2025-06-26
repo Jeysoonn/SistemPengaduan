@@ -75,9 +75,7 @@ export default function RiwayatPengaduan() {
       <div className="absolute -top-20 -left-20 w-72 h-72 bg-[#8fd8f8] opacity-20 rounded-full z-0"></div>
 
       <div
-        className={`relative z-10 max-w-5xl mx-auto transition-all duration-700 ease-in-out ${
-          showPage ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-        }`}
+        className= "relative z-10 max-w-5xl mx-auto"
       >
         <h2 className="text-3xl font-bold text-center text-white bg-gradient-to-r from-[#37CAD2] to-[#2596be] py-4 rounded-xl shadow-lg mb-10">
           Riwayat Pengaduan
