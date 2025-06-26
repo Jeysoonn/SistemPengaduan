@@ -104,8 +104,8 @@ export default function RiwayatPengaduan() {
                 className="bg-white border border-gray-200 rounded-xl shadow-md hover:shadow-lg transition-all p-6"
               >
                 <div className="flex justify-between items-center mb-2">
-                  <h3 className="text-xl font-semibold text-[#1e7da0]">{item.judul}</h3>
-                  <span className="text-sm text-gray-400">{formatDate(item.tanggal)}</span>
+                  <h3 className="text-xl font-semibold text-[#1e7da0]">{item.judul_laporan}</h3>
+                  <span className="text-sm text-gray-400">{formatDate(item.tanggal_pengaduan)}</span>
                 </div>
 
                 <p className="text-gray-600 text-sm mb-3">
@@ -116,7 +116,7 @@ export default function RiwayatPengaduan() {
 
                 <div className="flex justify-between items-center text-sm text-gray-700 mt-4">
                   <div>
-                    <strong className="text-gray-800">Tujuan:</strong> {item.tujuan}
+                    <strong className="text-gray-800">Tujuan:</strong> {item.tujuan_laporan}
                   </div>
                   <div className="flex items-center gap-4">
                     {statusBadge(item.status)}
@@ -144,17 +144,17 @@ export default function RiwayatPengaduan() {
             </h3>
             <div className="space-y-3 text-gray-700 text-sm">
               <div>
-                <strong className="text-[#5DC7D1]">Judul:</strong> {selected.judul}
+                <strong className="text-[#5DC7D1]">Judul:</strong> {selected.judul_laporan}
               </div>
               <div>
                 <strong className="text-[#5DC7D1]">Deskripsi:</strong><br />
                 <p className="mt-1">{selected.deskripsi}</p>
               </div>
               <div>
-                <strong className="text-[#5DC7D1]">Tanggal:</strong> {formatDate(selected.tanggal)}
+                <strong className="text-[#5DC7D1]">Tanggal:</strong> {formatDate(selected.tanggal_pengaduan)}
               </div>
               <div>
-                <strong className="text-[#5DC7D1]">Tujuan:</strong> {selected.tujuan}
+                <strong className="text-[#5DC7D1]">Tujuan:</strong> {selected.tujuan_laporan}
               </div>
               <div>
                 <strong className="text-[#5DC7D1]">Status:</strong> <div className="mt-3">{statusBadge(selected.status)}</div>
