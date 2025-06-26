@@ -1,42 +1,41 @@
 import { useEffect, useState } from "react";
-import { FaCheckCircle, FaClock, FaTimesCircle } from "react-icons/fa";
+import { FaCheckCircle, FaClock, FaTimesCircle, FaExclamationTriangle } from "react-icons/fa";
+import { pengaduanAPI } from "../../service/apiPengaduan";
+import { useUser } from "../../context/UserContext";
 
 export default function RiwayatPengaduan() {
   const [riwayat, setRiwayat] = useState([]);
   const [selected, setSelected] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [showPage, setShowPage] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const { user } = useUser();
 
   useEffect(() => {
-    setTimeout(() => setShowPage(true), 100);
-    setRiwayat([
-      {
-        id: 1,
-        judul: "Wifi lemot",
-        deskripsi: "Wifi di gsg lemot parah.",
-        tanggal: "2025-06-01",
-        tujuan: "BSTI",
-        status: "Diproses",
-      },
-      {
-        id: 2,
-        judul: "Kehilangan kunci motor",
-        deskripsi: "Kehilangan kunci motor Fazzio Hybrid.",
-        tanggal: "2025-06-05",
-        tujuan: "Security",
-        status: "Selesai",
-      },
-      {
-        id: 3,
-        judul: "Kursi rusak di ruang 124.",
-        deskripsi:
-          "Kursi di ruang kelas 124 patah bagian kaki dan membahayakan mahasiswa.",
-        tanggal: "2025-06-10",
-        tujuan: "BAAK",
-        status: "Belum Diproses",
-      },
-    ]);
-  }, []);
+    const fetchPengaduan = async () => {
+      try {
+        setLoading(true);
+        const allPengaduan = await pengaduanAPI.fetchPengaduan();
+        
+        // Filter pengaduan by logged-in user's ID
+        const userPengaduan = allPengaduan.filter(
+          (p) => p.id_user === user.id_user
+        );
+        
+        setRiwayat(userPengaduan);
+        setError(null);
+      } catch (err) {
+        console.error("Failed to fetch pengaduan:", err);
+        setError("Gagal memuat data riwayat pengaduan");
+      } finally {
+        setLoading(false);
+        setTimeout(() => setShowPage(true), 100);
+      }
+    };
+
+    fetchPengaduan();
+  }, [user]);
 
   const statusBadge = (status) => {
     if (status === "Selesai") {
@@ -69,53 +68,71 @@ export default function RiwayatPengaduan() {
     setShowModal(false);
   };
 
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString('id-ID', options);
+  };
+
   return (
     <div className="relative bg-white py-16 px-6 md:px-12 overflow-visible">
       {/* Elemen dekoratif kiri atas */}
       <div className="absolute -top-20 -left-20 w-72 h-72 bg-[#8fd8f8] opacity-20 rounded-full z-0"></div>
 
-      <div
-        className= "relative z-10 max-w-5xl mx-auto"
-      >
+      <div className="relative z-10 max-w-5xl mx-auto">
         <h2 className="text-3xl font-bold text-center text-white bg-gradient-to-r from-[#37CAD2] to-[#2596be] py-4 rounded-xl shadow-lg mb-10">
           Riwayat Pengaduan
         </h2>
 
-        <div className="grid gap-6">
-          {riwayat.map((item) => (
-            <div
-              key={item.id}
-              className="bg-white border border-gray-200 rounded-xl shadow-md hover:shadow-lg transition-all p-6"
-            >
-              <div className="flex justify-between items-center mb-2">
-                <h3 className="text-xl font-semibold text-[#1e7da0]">{item.judul}</h3>
-                <span className="text-sm text-gray-400">{item.tanggal}</span>
-              </div>
-
-              <p className="text-gray-600 text-sm mb-3">
-                {item.deskripsi.length > 100
-                  ? item.deskripsi.substring(0, 100) + "..."
-                  : item.deskripsi}
-              </p>
-
-              <div className="flex justify-between items-center text-sm text-gray-700 mt-4">
-                <div>
-                  <strong className="text-gray-800">Tujuan:</strong> {item.tujuan}
+        {loading ? (
+          <div className="flex justify-center items-center h-64">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#2596be]"></div>
+          </div>
+        ) : error ? (
+          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-center">
+            <FaExclamationTriangle className="inline-block mr-2" />
+            {error}
+          </div>
+        ) : riwayat.length === 0 ? (
+          <div className="bg-blue-50 border border-blue-200 text-blue-700 px-4 py-3 rounded-lg text-center">
+            Anda belum memiliki riwayat pengaduan
+          </div>
+        ) : (
+          <div className="grid gap-6">
+            {riwayat.map((item) => (
+              <div
+                key={item.id_pengaduan}
+                className="bg-white border border-gray-200 rounded-xl shadow-md hover:shadow-lg transition-all p-6"
+              >
+                <div className="flex justify-between items-center mb-2">
+                  <h3 className="text-xl font-semibold text-[#1e7da0]">{item.judul}</h3>
+                  <span className="text-sm text-gray-400">{formatDate(item.tanggal)}</span>
                 </div>
-                <div className="flex items-center gap-4">
-                  {statusBadge(item.status)}
-                  <button
-                    onClick={() => openModal(item)}
-                    className="text-[#2596be] text-xs hover:underline relative z-20"
-                    type="button"
-                  >
-                    Lihat Detail
-                  </button>
+
+                <p className="text-gray-600 text-sm mb-3">
+                  {item.deskripsi.length > 100
+                    ? item.deskripsi.substring(0, 100) + "..."
+                    : item.deskripsi}
+                </p>
+
+                <div className="flex justify-between items-center text-sm text-gray-700 mt-4">
+                  <div>
+                    <strong className="text-gray-800">Tujuan:</strong> {item.tujuan}
+                  </div>
+                  <div className="flex items-center gap-4">
+                    {statusBadge(item.status)}
+                    <button
+                      onClick={() => openModal(item)}
+                      className="text-[#2596be] text-xs hover:underline relative z-20"
+                      type="button"
+                    >
+                      Lihat Detail
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {showModal && selected && (
@@ -134,7 +151,7 @@ export default function RiwayatPengaduan() {
                 <p className="mt-1">{selected.deskripsi}</p>
               </div>
               <div>
-                <strong className="text-[#5DC7D1]">Tanggal:</strong> {selected.tanggal}
+                <strong className="text-[#5DC7D1]">Tanggal:</strong> {formatDate(selected.tanggal)}
               </div>
               <div>
                 <strong className="text-[#5DC7D1]">Tujuan:</strong> {selected.tujuan}
