@@ -46,7 +46,7 @@ const DaftarLaporanSecurity = lazy(() => import("./pages/Security/DaftarLaporan"
 const RiwayatDaftarLaporanBAAK = lazy(() => import("./pages/Baak/RiwayatDaftarLaporan"));
 const DaftarLaporanBAAK = lazy(() => import("./pages/Baak/DaftarLaporan"));
 
-function App() {
+export default function App() {
   return (
     <UserProvider>
       <Router>

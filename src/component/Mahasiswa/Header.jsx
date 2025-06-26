@@ -1,10 +1,14 @@
+// src/component/Header.jsx
+
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaBars, FaTimes } from "react-icons/fa";
+import { useUser } from "../../context/UserContext";
 
 export default function Header() {
   const location = useLocation();
   const navigate = useNavigate();
+  const { user, logout, isAuthenticated } = useUser();
 
   const [activeSection, setActiveSection] = useState("home");
   const [bgOpacity, setBgOpacity] = useState(0);
@@ -13,7 +17,7 @@ export default function Header() {
 
   useEffect(() => {
     switch (location.pathname) {
-      case "/":
+      case "/home":
         setActiveSection("home");
         break;
       case "/about":
@@ -41,7 +45,6 @@ export default function Header() {
     const handleScroll = () => {
       const scrollPosition = window.scrollY;
       const opacity = Math.min(scrollPosition / 300, 1);
-
       setBgOpacity(opacity);
       setScrolling(true);
 
@@ -59,17 +62,23 @@ export default function Header() {
     };
   }, []);
 
+  const handleLogout = () => {
+    logout();
+    setMenuOpen(false);
+    navigate("/auth/login");
+  };
+
   const ListHeader = ({ title, href, isActive }) => {
     const menuClass = () =>
       `flex cursor-pointer items-center rounded-xl p-4 space-x-2
-      ${isActive ? "font-extrabold" : "hover:text-[#5ab3d1] hover:font-bold transition-all duration-200"}
-      text-base relative`;
+       ${isActive ? "font-extrabold" : "hover:text-[#5ab3d1] hover:font-bold transition-all duration-200"}
+       text-base relative`;
 
     return (
       <Link
         to={href}
         className={`${menuClass()} ${isActive ? "text-[#2596be]" : ""}`}
-        onClick={() => setMenuOpen(false)} // close menu on mobile click
+        onClick={() => setMenuOpen(false)}
       >
         <span>{title}</span>
         {isActive && (
@@ -104,17 +113,17 @@ export default function Header() {
               </div>
             </div>
 
-            {/* Toggle Button (Mobile) */}
+            {/* Toggle (Mobile) */}
             <div className="md:hidden">
               <button onClick={() => setMenuOpen(!menuOpen)} className="text-[#2596be] text-2xl focus:outline-none">
                 {menuOpen ? <FaTimes /> : <FaBars />}
               </button>
             </div>
 
-            {/* Navbar Menu (Desktop) */}
+            {/* Desktop Navbar */}
             <ul className="hidden md:flex items-center">
               <li className="mx-3 font-bold">
-                <ListHeader href="/" title="Home" isActive={activeSection === "home"} />
+                <ListHeader href="/home" title="Home" isActive={activeSection === "home"} />
               </li>
               <li className="mx-3 font-bold">
                 <ListHeader href="/about" title="About" isActive={activeSection === "about"} />
@@ -133,35 +142,56 @@ export default function Header() {
               </li>
             </ul>
 
-            {/* Auth Button */}
-            <div className="hidden md:flex items-center gap-3">
-              <button
-                onClick={() => navigate("/auth")}
-                className="bg-[#789cdb] text-white px-8 py-2 font-bold rounded-lg text-x2 shadow-md hover:shadow-lg transition-shadow duration-300"
-              >
-                Login
-              </button>
+            {/* Auth Section */}
+            <div className="flex items-center gap-3">
+              {isAuthenticated() ? (
+                <div className="flex items-center gap-3">
+                  <div className="text-right">
+                    <p className="text-sm font-semibold text-gray-800">
+                      {user?.nama || user?.email || "User"}
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      {user?.role || "Role"}
+                    </p>
+                  </div>
+                  <button
+                    onClick={handleLogout}
+                    className="bg-red-500 text-white px-6 py-2 font-bold rounded-lg text-sm shadow-md hover:bg-red-600 transition-colors duration-300"
+                  >
+                    Logout
+                  </button>
+                </div>
+              ) : (
+                <button
+                  onClick={() => navigate("/auth/login")}
+                  className="bg-[#1e7da0] text-white px-8 py-2 font-bold rounded-lg text-sm shadow-md hover:shadow-lg transition-shadow duration-300"
+                >
+                  Login
+                </button>
+              )}
             </div>
           </div>
 
-          {/* Navbar Menu (Mobile Dropdown) */}
+          {/* Mobile Navbar */}
           {menuOpen && (
             <ul className="md:hidden flex flex-col items-start space-y-1 mb-4">
-              <ListHeader href="/" title="Home" isActive={activeSection === "home"} />
+              <ListHeader href="/home" title="Home" isActive={activeSection === "home"} />
               <ListHeader href="/about" title="About" isActive={activeSection === "about"} />
               <ListHeader href="/layanan" title="Layanan" isActive={activeSection === "layanan"} />
               <ListHeader href="/artikel" title="Artikel" isActive={activeSection === "artikel"} />
               <ListHeader href="/pengaduan" title="Pengaduan" isActive={activeSection === "pengaduan"} />
               <ListHeader href="/faq" title="FAQ" isActive={activeSection === "faq"} />
-              <button
-                onClick={() => {
-                  setMenuOpen(false);
-                  navigate("/auth");
-                }}
-                className="bg-[#789cdb] text-white px-6 py-2 font-bold rounded-lg text-sm mt-2"
-              >
-                Login
-              </button>
+              {!isAuthenticated() && (
+                <button
+                  onClick={() => {
+                    setMenuOpen(false);
+                    navigate("/auth/login");
+                  }}
+                  className="bg-[#789cdb] text-white px-6 py-2 font-bold rounded-lg text-sm mt-2"
+                >
+                  Login
+                </button>
+              )}
             </ul>
           )}
         </div>

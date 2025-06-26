@@ -1,15 +1,4 @@
 import HeroSection from "../../component/Mahasiswa/HeroSection";
-import AdminViewIndicator from "../../component/AdminViewIndicator";
-
-export default function Home() {
-    return (
-        <div>
-            <AdminViewIndicator />
-            <HeroSection/>
-        </div>
-    );
-}
-import HeroSection from "../../component/Mahasiswa/HeroSection";
 import {
     FaTools,
     FaShieldAlt,
@@ -26,7 +15,7 @@ import ReviewData from "../../assets/testimoni.json";
 
 export default function Home() {
     const navMenus = [
-        { icon: <FaHome className="text-white text-xl" />, title: "Home", href: "/" },
+        { icon: <FaHome className="text-white text-xl" />, title: "Home", href: "/home" },
         { icon: <FaInfoCircle className="text-white text-xl" />, title: "Tentang", href: "/about" },
         { icon: <FaServicestack className="text-white text-xl" />, title: "Layanan", href: "/layanan" },
         { icon: <FaNewspaper className="text-white text-xl" />, title: "Artikel", href: "/artikel" },

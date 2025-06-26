@@ -62,7 +62,7 @@ export default function Pengaduan() {
                     </div>
                 </div>
             </div>
-
+            
             <RiwayatPengaduan />
         </div>
     );
