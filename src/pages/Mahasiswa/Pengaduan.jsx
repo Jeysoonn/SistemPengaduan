@@ -2,6 +2,7 @@ import { FaPenFancy, FaShare, FaCommentDots, FaComments, FaCheckCircle } from "r
 import FormulirPengaduan from "../../component/Mahasiswa/FormulirPengaduan";
 import RiwayatPengaduan from "../../component/Mahasiswa/Riwayat";
 import PageHeader from "../../component/Mahasiswa/PageHeader";
+import AdminViewIndicator from "../../component/AdminViewIndicator";
 
 export default function Pengaduan() {
     const steps = [
@@ -40,6 +41,7 @@ export default function Pengaduan() {
 
     return (
         <div>
+            <AdminViewIndicator />
             
             <PageHeader title="Pengaduan" icon={<FaPenFancy className="text-2xl text-white" />} />
 

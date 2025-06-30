@@ -30,10 +30,11 @@ const MahasiswaLayout = lazy(() => import("./layout/MahasiswaLayout"));
 const Home = lazy(() => import("./pages/Mahasiswa/Home"));
 const Formulir = lazy(() => import("./pages/Mahasiswa/Formulir"));
 const About = lazy(() => import("./pages/Mahasiswa/About"));
-const Layanan = lazy(() => import("./pages/Mahasiswa/Layanan"));
-const Artikel = lazy(() => import("./pages/Mahasiswa/Artikel"));
+
 const Pengaduan = lazy(() => import("./pages/Mahasiswa/Pengaduan"));
 const FAQ = lazy(() => import("./pages/Mahasiswa/FAQ"));
+const Artikel = lazy(() => import("./pages/Mahasiswa/Artikel"));
+const Layanan = lazy(() => import("./pages/Mahasiswa/Layanan"));
 
 const Faq = lazy(() => import("./pages/Admin/Faq"));
 
@@ -117,10 +118,10 @@ export default function App() {
               <Route path="/home" element={<Home />} />
               <Route path="/formulir" element={<Formulir />} />
               <Route path="/about" element={<About />} />
-              <Route path="/layanan" element={<Layanan />} />
-              <Route path="/artikel" element={<Artikel />} />
               <Route path="/pengaduan" element={<Pengaduan />} />
               <Route path="/faq" element={<FAQ />} />
+              <Route path="/artikel" element={<Artikel />} />
+              <Route path="/layanan" element={<Layanan />} />
             </Route>
 
             {/* Default redirect to login if no route matches */}

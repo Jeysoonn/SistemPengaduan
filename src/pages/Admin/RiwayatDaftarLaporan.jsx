@@ -8,6 +8,7 @@ export default function RiwayatDaftarLaporan() {
   const [pengaduanList, setPengaduanList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedPengaduan, setSelectedPengaduan] = useState(null);
   const [activeFilter, setActiveFilter] = useState("Semua");
   const [formData, setFormData] = useState({
@@ -16,6 +17,15 @@ export default function RiwayatDaftarLaporan() {
     tujuan_laporan: "",
     status: "",
     tanggapan: "",
+  });
+  const [editFormData, setEditFormData] = useState({
+    judul_laporan: "",
+    deskripsi: "",
+    tujuan_laporan: "",
+    tanggal_pengaduan: "",
+    bukti: "",
+    status: "",
+    id_user: "",
   });
   const [tanggapanList, setTanggapanList] = useState([]);
   const [userList, setUserList] = useState([]);
@@ -87,6 +97,48 @@ export default function RiwayatDaftarLaporan() {
       [name]: value,
     }));
   };
+  
+  const handleEditModalOpen = (pengaduan) => {
+    setSelectedPengaduan(pengaduan);
+    setEditFormData({
+      judul_laporan: pengaduan.judul_laporan,
+      deskripsi: pengaduan.deskripsi,
+      tujuan_laporan: pengaduan.tujuan_laporan,
+      tanggal_pengaduan: pengaduan.tanggal_pengaduan,
+      bukti: pengaduan.bukti,
+      status: pengaduan.status,
+      id_user: pengaduan.id_user,
+    });
+    setIsEditModalOpen(true);
+  };
+
+  const handleEditModalClose = () => {
+    setIsEditModalOpen(false);
+    setSelectedPengaduan(null);
+  };
+
+  const handleEditInputChange = (e) => {
+    const { name, value } = e.target;
+    setEditFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleEditSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await pengaduanAPI.updatePengaduan(selectedPengaduan.id_pengaduan, editFormData);
+      const updatedData = await pengaduanAPI.fetchPengaduan();
+      setPengaduanList(updatedData.filter(item => item.status === "Selesai"));
+      handleEditModalClose();
+      // Show success message
+      alert("Pengaduan berhasil diperbarui!");
+    } catch (error) {
+      console.error("Error updating pengaduan:", error);
+      alert("Gagal memperbarui pengaduan. Silakan coba lagi.");
+    }
+  };
 
   const handleDelete = async (id_pengaduan) => {
     if (!window.confirm("Apakah Anda yakin ingin menghapus pengaduan ini?")) return;
@@ -114,7 +166,7 @@ export default function RiwayatDaftarLaporan() {
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-black text-2xl font-bold mb-4">Riwayat Pengaduan</h1>
-      <Breadcrumb items={["Home", "Dashboard", "Riwayat Pengaduan"]} />
+      <Breadcrumb />
 
       <div className="flex space-x-2 mb-4 overflow-x-auto pb-2">
         {uniqueTujuanLaporan.map((tujuan) => (
@@ -219,6 +271,15 @@ export default function RiwayatDaftarLaporan() {
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                      </button>
+                      <button
+                        onClick={() => handleEditModalOpen(pengaduan)}
+                        className="text-yellow-600 hover:text-yellow-900 transition-colors duration-200"
+                        title="Edit"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                         </svg>
                       </button>
                       <button
@@ -351,6 +412,131 @@ export default function RiwayatDaftarLaporan() {
                 </button>
               </div>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal Edit */}
+      {isEditModalOpen && selectedPengaduan && (
+        <div className="fixed inset-0 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-lg shadow-xl w-full max-w-md">
+            <div className="flex justify-between items-center border-b px-6 py-4">
+              <h3 className="text-lg font-medium text-black">
+                Edit Pengaduan
+              </h3>
+              <button
+                onClick={handleEditModalClose}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                &times;
+              </button>
+            </div>
+
+            <form onSubmit={handleEditSubmit} className="p-6">
+              <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="edit_judul_laporan">
+                  Judul Laporan
+                </label>
+                <input
+                  type="text"
+                  id="edit_judul_laporan"
+                  name="judul_laporan"
+                  value={editFormData.judul_laporan}
+                  onChange={handleEditInputChange}
+                  className="w-full px-3 py-2 border rounded shadow appearance-none text-black"
+                  required
+                />
+              </div>
+
+              <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="edit_deskripsi">
+                  Deskripsi
+                </label>
+                <textarea
+                  id="edit_deskripsi"
+                  name="deskripsi"
+                  value={editFormData.deskripsi}
+                  onChange={handleEditInputChange}
+                  rows="4"
+                  className="w-full px-3 py-2 border rounded shadow appearance-none text-black"
+                  required
+                ></textarea>
+              </div>
+
+              <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="edit_tujuan_laporan">
+                  Tujuan Laporan
+                </label>
+                <select
+                  id="edit_tujuan_laporan"
+                  name="tujuan_laporan"
+                  value={editFormData.tujuan_laporan}
+                  onChange={handleEditInputChange}
+                  className="w-full px-3 py-2 border rounded shadow appearance-none text-black"
+                  required
+                >
+                  <option value="">Pilih Tujuan</option>
+                  <option value="BAAK">BAAK</option>
+                  <option value="BSTI">BSTI</option>
+                  <option value="Security">Security</option>
+                </select>
+              </div>
+
+              <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="edit_status">
+                  Status
+                </label>
+                <select
+                  id="edit_status"
+                  name="status"
+                  value={editFormData.status}
+                  onChange={handleEditInputChange}
+                  className="w-full px-3 py-2 border rounded shadow appearance-none text-black"
+                  required
+                >
+                  <option value="Menunggu">Menunggu</option>
+                  <option value="Diproses">Diproses</option>
+                  <option value="Selesai">Selesai</option>
+                </select>
+              </div>
+
+              {editFormData.bukti && (
+                <div className="mb-4">
+                  <label className="block text-gray-700 text-sm font-bold mb-2">
+                    Bukti
+                  </label>
+                  <div className="w-full">
+                    <a
+                      href={editFormData.bukti}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:text-blue-800 flex items-center"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                      </svg>
+                      Lihat Bukti
+                    </a>
+                  </div>
+                </div>
+              )}
+
+              <div className="flex justify-end">
+                <button
+                  type="button"
+                  onClick={handleEditModalClose}
+                  className="mr-2 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded"
+                >
+                  Batal
+                </button>
+                <button
+                  type="submit"
+                  className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+                >
+                  Simpan Perubahan
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}

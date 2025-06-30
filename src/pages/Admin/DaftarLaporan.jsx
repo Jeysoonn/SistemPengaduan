@@ -200,7 +200,7 @@ export default function Laporan() {
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-black text-2xl font-bold mb-4">Tabel Pengaduan</h1>
-      <Breadcrumb items={["Home", "Dashboard", "Pengaduan"]} />
+      <Breadcrumb />
 
       <div className="flex space-x-2 mb-4 overflow-x-auto pb-2">
         {uniqueTujuanLaporan.map((tujuan) => (
@@ -496,6 +496,25 @@ export default function Laporan() {
                   className="w-full px-3 py-2 border rounded shadow appearance-none text-black"
                   required
                 ></textarea>
+              </div>
+
+              <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="edit_tujuan_laporan">
+                  Tujuan Laporan
+                </label>
+                <select
+                  id="edit_tujuan_laporan"
+                  name="tujuan_laporan"
+                  value={editFormData.tujuan_laporan}
+                  onChange={handleEditInputChange}
+                  className="w-full px-3 py-2 border rounded shadow appearance-none text-black"
+                  required
+                >
+                  <option value="">Pilih Tujuan</option>
+                  <option value="BAAK">BAAK</option>
+                  <option value="BSTI">BSTI</option>
+                  <option value="Security">Security</option>
+                </select>
               </div>
 
               <div className="mb-4">

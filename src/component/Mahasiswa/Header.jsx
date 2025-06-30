@@ -23,17 +23,17 @@ export default function Header() {
       case "/about":
         setActiveSection("about");
         break;
-      case "/layanan":
-        setActiveSection("layanan");
-        break;
-      case "/artikel":
-        setActiveSection("artikel");
-        break;
       case "/pengaduan":
         setActiveSection("pengaduan");
         break;
       case "/faq":
         setActiveSection("faq");
+        break;
+      case "/artikel":
+        setActiveSection("artikel");
+        break;
+      case "/layanan":
+        setActiveSection("layanan");
         break;
       default:
         setActiveSection("");
@@ -129,10 +129,10 @@ export default function Header() {
                 <ListHeader href="/about" title="About" isActive={activeSection === "about"} />
               </li>
               <li className="mx-3 font-bold">
-                <ListHeader href="/layanan" title="Layanan" isActive={activeSection === "layanan"} />
+                <ListHeader href="/artikel" title="Artikel" isActive={activeSection === "artikel"} />
               </li>
               <li className="mx-3 font-bold">
-                <ListHeader href="/artikel" title="Artikel" isActive={activeSection === "artikel"} />
+                <ListHeader href="/layanan" title="Layanan" isActive={activeSection === "layanan"} />
               </li>
               <li className="mx-3 font-bold">
                 <ListHeader href="/pengaduan" title="Pengaduan" isActive={activeSection === "pengaduan"} />
@@ -177,8 +177,8 @@ export default function Header() {
             <ul className="md:hidden flex flex-col items-start space-y-1 mb-4">
               <ListHeader href="/home" title="Home" isActive={activeSection === "home"} />
               <ListHeader href="/about" title="About" isActive={activeSection === "about"} />
-              <ListHeader href="/layanan" title="Layanan" isActive={activeSection === "layanan"} />
               <ListHeader href="/artikel" title="Artikel" isActive={activeSection === "artikel"} />
+              <ListHeader href="/layanan" title="Layanan" isActive={activeSection === "layanan"} />
               <ListHeader href="/pengaduan" title="Pengaduan" isActive={activeSection === "pengaduan"} />
               <ListHeader href="/faq" title="FAQ" isActive={activeSection === "faq"} />
               {!isAuthenticated() && (

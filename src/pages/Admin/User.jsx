@@ -126,7 +126,7 @@ export default function User() {
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-black text-2xl font-bold mb-4">Tabel User</h1>
-      <Breadcrumb items={["Home", "Dashboard", "User"]} />
+      <Breadcrumb />
 
       {error && (
         <div className="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { FaInfoCircle } from "react-icons/fa";
 import PageHeader from "../../component/Mahasiswa/PageHeader";
+import AdminViewIndicator from "../../component/AdminViewIndicator";
 
 export default function About() {
     const [show, setShow] = useState(false);
@@ -12,6 +13,7 @@ export default function About() {
 
     return (
         <div className="relative bg-gray-50 text-gray-800 overflow-hidden">
+            <AdminViewIndicator />
             {/* Ornamen atas */}
             <div
                 aria-hidden="true"

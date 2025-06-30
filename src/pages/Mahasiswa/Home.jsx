@@ -12,6 +12,7 @@ import {
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import ReviewData from "../../assets/testimoni.json";
+import AdminViewIndicator from "../../component/AdminViewIndicator";
 
 export default function Home() {
     const navMenus = [
@@ -25,6 +26,7 @@ export default function Home() {
 
     return (
         <div>
+            <AdminViewIndicator />
             {/* Hero Section */}
             <HeroSection />
 

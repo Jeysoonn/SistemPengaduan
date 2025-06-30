@@ -204,7 +204,7 @@ export default function Laporan() {
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-black text-2xl font-bold mb-4">Tabel Pengaduan</h1>
-      <Breadcrumb items={["Home", "Dashboard", "Pengaduan"]} />
+      <Breadcrumb />
 
       <div className="bg-white rounded-lg shadow overflow-hidden">
         <div className="overflow-x-auto">

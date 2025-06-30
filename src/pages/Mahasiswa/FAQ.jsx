@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { FaQuestionCircle, FaChevronDown, FaChevronUp } from "react-icons/fa";
 import PageHeader from "../../component/Mahasiswa/PageHeader";
 import { faqAPI } from "../../service/apiFaq";
+import AdminViewIndicator from "../../component/AdminViewIndicator";
 
 export default function FAQ() {
     const [faqs, setFaqs] = useState([]);
@@ -31,6 +32,7 @@ export default function FAQ() {
 
     return (
         <div className="relative bg-gray-50 text-gray-800 overflow-hidden">
+            <AdminViewIndicator />
             {/* Ornamen atas */}
             <div
                 aria-hidden="true"
@@ -115,7 +117,7 @@ export default function FAQ() {
                                         activeIndex === index ? "block" : "hidden"
                                     }`}
                                 >
-                                    <p className="text-gray-700 leading-relaxed">
+                                    <p className="text-gray-700 leading-relaxed" style={{ whiteSpace: 'pre-line' }}>
                                         {faq.Jawaban}
                                     </p>
                                 </div>

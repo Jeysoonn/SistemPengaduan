@@ -136,7 +136,7 @@ const Sidebar = () => {
       <div className="p-6 border-t border-gray-100">
         <div className="flex items-center gap-3 mb-4">
           <img
-            src="https://via.placeholder.com/40"
+            src={`https://ui-avatars.com/api/?name=${user ? user.nama || user.email : "User"}&background=0891B2&color=ffffff&size=40&bold=true`}
             alt="User"
             className="w-10 h-10 rounded-full object-cover border-2 border-cyan-400"
           />

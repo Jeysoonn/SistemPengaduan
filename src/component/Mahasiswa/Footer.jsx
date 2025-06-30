@@ -49,8 +49,8 @@ export default function Footer() {
           <ul className="space-y-2 text-sm">
             <li><Link to="/" className="hover:underline">Beranda</Link></li>
             <li><Link to="/about" className="hover:underline">Tentang</Link></li>
-            <li><Link to="/services" className="hover:underline">Layanan</Link></li>
-            <li><Link to="/articles" className="hover:underline">Artikel</Link></li>
+            <li><Link to="/artikel" className="hover:underline">Artikel</Link></li>
+            <li><Link to="/layanan" className="hover:underline">Layanan</Link></li>
             <li><Link to="/pengaduan" className="hover:underline">Pengaduan</Link></li>
             <li><Link to="/faq" className="hover:underline">FAQ</Link></li>
           </ul>

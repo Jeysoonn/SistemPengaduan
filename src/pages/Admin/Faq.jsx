@@ -104,7 +104,7 @@ export default function Faq() {
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-black text-2xl font-bold mb-4">Tabel FAQ</h1>
-      <Breadcrumb items={["Home", "Dashboard", "FAQ"]} />
+      <Breadcrumb />
 
       {error && (
         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
@@ -158,7 +158,7 @@ export default function Faq() {
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-normal text-sm text-gray-700 max-w-xs">
-                        <div className="line-clamp-2">
+                        <div className="line-clamp-2" style={{ whiteSpace: 'pre-line' }}>
                           {faq.Jawaban}
                         </div>
                       </td>
@@ -251,6 +251,7 @@ export default function Faq() {
                   onChange={handleInputChange}
                   rows="4"
                   className="w-full px-3 py-2 border rounded shadow appearance-none text-black"
+                  style={{ whiteSpace: 'pre-line' }}
                   required
                 ></textarea>
               </div>

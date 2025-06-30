@@ -43,7 +43,7 @@ export default function AdminDashboard() {
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-cyan-800 text-3xl font-bold mb-4">Dashboard Admin</h1>
-      <Breadcrumb items={["Home", "Dashboard", "Admin"]} />
+      <Breadcrumb />
 
       {/* Statistik Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
