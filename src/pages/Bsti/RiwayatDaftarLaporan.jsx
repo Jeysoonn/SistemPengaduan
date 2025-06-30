@@ -253,6 +253,29 @@ export default function RiwayatDaftarLaporan() {
 
               <div className="mb-4">
                 <label className="block text-gray-700 text-sm font-bold mb-2">
+                  Bukti
+                </label>
+                <div className="w-full px-3 py-2 border rounded shadow appearance-none text-black bg-gray-100">
+                  {formData.bukti ? (
+                    <a
+                      href={formData.bukti}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:text-blue-800 flex items-center"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                      </svg>
+                      Lihat Bukti
+                    </a>
+                  ) : (
+                    <span className="text-gray-500 italic">Tidak ada bukti</span>
+                  )}
+                </div>
+              </div>
+
+              <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2">
                   Status
                 </label>
                 <div className="w-full px-3 py-2 border rounded shadow appearance-none text-black bg-gray-100">

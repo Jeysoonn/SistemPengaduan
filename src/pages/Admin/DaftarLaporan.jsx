@@ -232,6 +232,10 @@ export default function Laporan() {
                   Deskripsi
                 </th>
                 <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Bukti
+                </th>
+                
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Tujuan
                 </th>
                 <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -257,6 +261,27 @@ export default function Laporan() {
                     <td className="px-6 py-4 whitespace-normal text-sm text-gray-700 max-w-xs">
                       <div className="line-clamp-2">
                         {pengaduan.deskripsi}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-normal text-sm text-gray-700 max-w-xs">
+                      <div className="flex items-center space-x-2">
+                        {pengaduan.bukti ? (
+                          <>
+                            <a
+                              href={pengaduan.bukti}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-blue-600 hover:text-blue-800 flex items-center"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                              </svg>
+                              Lihat Bukti
+                            </a>
+                          </>
+                        ) : (
+                          <span className="text-gray-500 italic">Tidak ada bukti</span>
+                        )}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-normal text-sm text-gray-700">
@@ -350,6 +375,27 @@ export default function Laporan() {
                   disabled
                 />
               </div>
+
+              {selectedPengaduan.bukti && (
+                <div className="mb-4">
+                  <label className="block text-gray-700 text-sm font-bold mb-2">
+                    Bukti
+                  </label>
+                  <div className="w-full">
+                    <a
+                      href={selectedPengaduan.bukti}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:text-blue-800 flex items-center"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                      </svg>
+                      Lihat Bukti
+                    </a>
+                  </div>
+                </div>
+              )}
 
               <div className="mb-4">
                 <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="tanggapan">
@@ -469,6 +515,27 @@ export default function Laporan() {
                   <option value="Selesai">Selesai</option>
                 </select>
               </div>
+
+              {editFormData.bukti && (
+                <div className="mb-4">
+                  <label className="block text-gray-700 text-sm font-bold mb-2">
+                    Bukti
+                  </label>
+                  <div className="w-full">
+                    <a
+                      href={editFormData.bukti}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:text-blue-800 flex items-center"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                      </svg>
+                      Lihat Bukti
+                    </a>
+                  </div>
+                </div>
+              )}
 
               <div className="flex justify-end">
                 <button
