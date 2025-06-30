@@ -108,7 +108,7 @@ export default function Header() {
                 style={{ width: "auto", maxWidth: "60px" }}
               />
               <div className="leading-tight">
-                <div className="text-sm text-gray-700">Sistem Pengaduan</div>
+                <div className="text-sm text-gray-700">Lapor - PCR</div>
                 <div className="text-lg font-bold text-[#001d3d]">Politeknik Caltex Riau</div>
               </div>
             </div>
