@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Breadcrumb from "../../component/Breadcrumb";
+import Pagination from "../../component/Pagination";
 import { faqAPI } from "../../service/apiFaq";
 
 export default function Faq() {
@@ -9,6 +10,8 @@ export default function Faq() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [currentFaqId, setCurrentFaqId] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
   const [formData, setFormData] = useState({
     pertanyaan: "",
     jawaban: ""
@@ -101,6 +104,22 @@ export default function Faq() {
     setError(null);
   };
 
+  // Pagination logic
+  const totalItems = faqs.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentItems = faqs.slice(startIndex, endIndex);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+  const handleItemsPerPageChange = (newItemsPerPage) => {
+    setItemsPerPage(newItemsPerPage);
+    setCurrentPage(1);
+  };
+
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-black text-2xl font-bold mb-4">Tabel FAQ</h1>
@@ -146,11 +165,11 @@ export default function Faq() {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {faqs.length > 0 ? (
-                  faqs.map((faq, index) => (
+                {currentItems.length > 0 ? (
+                  currentItems.map((faq, index) => (
                     <tr key={faq.id_faq} className="hover:bg-gray-50 transition-colors duration-150">
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                        {index + 1}
+                        {startIndex + index + 1}
                       </td>
                       <td className="px-6 py-4 whitespace-normal text-sm text-gray-700 max-w-xs">
                         <div className="line-clamp-2">
@@ -206,6 +225,18 @@ export default function Faq() {
             </table>
           </div>
         </div>
+      )}
+
+      {/* Pagination */}
+      {totalItems > 0 && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          totalItems={totalItems}
+          itemsPerPage={itemsPerPage}
+          onPageChange={handlePageChange}
+          onItemsPerPageChange={handleItemsPerPageChange}
+        />
       )}
 
       {/* Add/Edit FAQ Modal */}

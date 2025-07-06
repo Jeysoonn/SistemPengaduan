@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Breadcrumb from "../../component/Breadcrumb";
+import Pagination from "../../component/Pagination";
 import { pengaduanAPI } from "../../service/apiPengaduan";
 import { tanggapanAPI } from "../../service/apiTanggapan";
 import { userAPI } from "../../service/apiUser";
@@ -10,6 +11,8 @@ export default function Laporan() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedPengaduan, setSelectedPengaduan] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
   const [formData, setFormData] = useState({
     judul_laporan: "",
     deskripsi: "",
@@ -62,6 +65,22 @@ export default function Laporan() {
 
   // Filter hanya untuk BSTI
   const filteredPengaduan = pengaduanList.filter(item => item.tujuan_laporan === "BSTI");
+
+  // Pagination logic
+  const totalItems = filteredPengaduan.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentItems = filteredPengaduan.slice(startIndex, endIndex);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+  const handleItemsPerPageChange = (newItemsPerPage) => {
+    setItemsPerPage(newItemsPerPage);
+    setCurrentPage(1);
+  };
 
   const handleModalOpen = async (pengaduan) => {
     setSelectedPengaduan(pengaduan);
@@ -235,11 +254,11 @@ export default function Laporan() {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {filteredPengaduan.length > 0 ? (
-                filteredPengaduan.map((pengaduan, index) => (
+              {currentItems.length > 0 ? (
+                currentItems.map((pengaduan, index) => (
                   <tr key={pengaduan.id_pengaduan} className="hover:bg-gray-50 transition-colors duration-150">
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      {index + 1}
+                      {startIndex + index + 1}
                     </td>
                     <td className="px-6 py-4 whitespace-normal text-sm text-gray-700 max-w-xs">
                       <div className="line-clamp-2 font-medium">
@@ -332,6 +351,18 @@ export default function Laporan() {
           </table>
         </div>
       </div>
+
+      {/* Pagination */}
+      {totalItems > 0 && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          totalItems={totalItems}
+          itemsPerPage={itemsPerPage}
+          onPageChange={handlePageChange}
+          onItemsPerPageChange={handleItemsPerPageChange}
+        />
+      )}
 
       {/* Modal Tanggapan */}
       {isModalOpen && selectedPengaduan && (

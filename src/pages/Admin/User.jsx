@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Breadcrumb from "../../component/Breadcrumb";
+import Pagination from "../../component/Pagination";
 import { userAPI } from "../../service/apiUser";
 
 export default function User() {
@@ -8,6 +9,8 @@ export default function User() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [activeFilter, setActiveFilter] = useState("Semua");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
   const [formData, setFormData] = useState({
     nama: "",
     email: "",
@@ -40,6 +43,27 @@ export default function User() {
   const filteredUsers = activeFilter === "Semua"
     ? userList
     : userList.filter(user => user.role === activeFilter);
+
+  // Pagination logic
+  const totalItems = filteredUsers.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentItems = filteredUsers.slice(startIndex, endIndex);
+
+  // Reset to first page when filter changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [activeFilter]);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+  const handleItemsPerPageChange = (newItemsPerPage) => {
+    setItemsPerPage(newItemsPerPage);
+    setCurrentPage(1);
+  };
 
   const handleModalOpen = (user) => {
     console.log("Membuka modal untuk user:", user);
@@ -163,11 +187,11 @@ export default function User() {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {filteredUsers.length > 0 ? (
-                filteredUsers.map((user, index) => (
+              {currentItems.length > 0 ? (
+                currentItems.map((user, index) => (
                   <tr key={user.id_user} className="hover:bg-gray-50 transition-colors duration-150">
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      {index + 1}
+                      {startIndex + index + 1}
                     </td>
                     <td className="px-6 py-4 whitespace-normal text-sm text-gray-700">
                       {user.nama}
@@ -216,6 +240,18 @@ export default function User() {
           </table>
         </div>
       </div>
+
+      {/* Pagination */}
+      {totalItems > 0 && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          totalItems={totalItems}
+          itemsPerPage={itemsPerPage}
+          onPageChange={handlePageChange}
+          onItemsPerPageChange={handleItemsPerPageChange}
+        />
+      )}
 
       {/* Edit Modal */}
       {isEditModalOpen && selectedUser && (
