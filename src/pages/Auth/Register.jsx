@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { userAPI } from "../../service/apiUser";  // Mengimpor notesAPI untuk registrasi
-import { useNavigate } from "react-router-dom";  // Untuk navigasi setelah registrasi
+import { userAPI } from "../../service/apiUser";
+import { useNavigate } from "react-router-dom";
 
 export default function Register() {
   const [nama, setNama] = useState("");
@@ -10,14 +10,13 @@ export default function Register() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const navigate = useNavigate();  // Hook untuk navigasi setelah registrasi
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError("");
 
-    // Validasi form
     if (!nama || !email || !password || !confirmPassword) {
       setError("All fields are required");
       setLoading(false);
@@ -31,23 +30,19 @@ export default function Register() {
     }
 
     try {
-      // Membuat akun pengguna baru menggunakan notesAPI
       const userData = {
         nama,
         email,
-        role: "Mahasiswa",  // Menetapkan role sebagai Mahasiswa, Anda bisa sesuaikan jika perlu
-        password,  // Pastikan password tidak dalam bentuk plaintext, Anda harus melakukan hashing jika memungkinkan
+        role: "Mahasiswa",
+        password,
       };
 
-      // Menggunakan notesAPI untuk membuat pengguna baru
       const response = await userAPI.createUser(userData);
       console.log("User registered:", response);
-
-      // Arahkan pengguna setelah registrasi berhasil (misalnya ke halaman login)
-      navigate("/auth/login");  // Anda bisa menyesuaikan dengan path yang sesuai
+      navigate("/auth/login");
     } catch (err) {
       console.error("Registration error:", err);
-      setError("Something went wrong during registration: " + err.message);  // Menampilkan pesan error yang lebih informatif
+      setError("Something went wrong: " + err.message);
     } finally {
       setLoading(false);
     }
@@ -55,7 +50,8 @@ export default function Register() {
 
   return (
     <>
-      <h2 className="text-3xl font-bold text-gray-800 mb-4 font-poppins">Register</h2>
+      <h2 className="text-3xl font-bold text-[#2596be] mb-4 font-poppins">Register</h2>
+      <p className="text-gray-500 text-sm mb-4 font-poppins">create your student account</p>
 
       {error && <div className="text-red-500 text-sm mb-3">{error}</div>}
 
@@ -65,7 +61,7 @@ export default function Register() {
           <input
             type="text"
             placeholder="Full Name"
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400"
+            className="w-full px-4 py-2 text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#37CAD2]"
             value={nama}
             onChange={(e) => setNama(e.target.value)}
             disabled={loading}
@@ -78,12 +74,14 @@ export default function Register() {
           <input
             type="email"
             placeholder="Email"
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400"
+            className="w-full px-4 py-2 text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#37CAD2]"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             disabled={loading}
           />
-          <p className="text-xs text-gray-500 mt-1">Enter a valid email, e.g., <em>name@example.com</em></p>
+          <p className="text-xs text-gray-500 mt-1">
+            Enter a valid email, e.g., <em>name@example.com</em>
+          </p>
         </div>
 
         {/* Password */}
@@ -91,7 +89,7 @@ export default function Register() {
           <input
             type="password"
             placeholder="Password"
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400"
+            className="w-full px-4 py-2 text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#37CAD2]"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             disabled={loading}
@@ -106,7 +104,7 @@ export default function Register() {
           <input
             type="password"
             placeholder="Confirm Password"
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400"
+            className="w-full px-4 py-2 text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#37CAD2]"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             disabled={loading}
@@ -117,16 +115,20 @@ export default function Register() {
         {/* Submit Button */}
         <button
           type="submit"
-          className="w-full py-2 bg-blue-500 text-white font-semibold rounded-full hover:bg-blue-600 transition font-poppins"
+          className="w-full py-2 bg-gradient-to-r from-[#37CAD2] to-[#91CBE3] text-white font-semibold rounded-full hover:opacity-90 transition font-poppins"
           disabled={loading}
         >
           {loading ? "Registering..." : "REGISTER"}
         </button>
 
         {/* Login Redirect */}
-        <div className="text-center mt-4 text-sm text-blue-600 hover:underline cursor-pointer" onClick={() => navigate("/auth/login")}>
-          Already have an account? Login here.
-        </div>
+        <button
+          type="button"
+          onClick={() => navigate("/auth/login")}
+          className="w-full py-2 border border-[#37CAD2] text-[#37CAD2] font-semibold rounded-full hover:bg-[#ecfdfd] transition font-poppins"
+        >
+          Back to Login
+        </button>
       </form>
     </>
   );

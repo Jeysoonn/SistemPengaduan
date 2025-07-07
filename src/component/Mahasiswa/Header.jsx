@@ -1,5 +1,3 @@
-// src/component/Header.jsx
-
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaBars, FaTimes } from "react-icons/fa";
@@ -77,7 +75,7 @@ export default function Header() {
     return (
       <Link
         to={href}
-        className={`${menuClass()} ${isActive ? "text-[#2596be]" : ""}`}
+        className={`${menuClass()} ${isActive ? "text-[#2596be]" : "text-gray-600"}`}
         onClick={() => setMenuOpen(false)}
       >
         <span>{title}</span>
@@ -99,8 +97,8 @@ export default function Header() {
       <div className="flex justify-center items-center">
         <div className="container px-5">
           <div className="flex justify-between items-center py-4">
-            {/* Logo */}
-            <div className="flex items-center space-x-3" style={{ height: "70px" }}>
+            {/* Logo bisa diklik */}
+            <Link to="/home" className="flex items-center space-x-3 cursor-pointer" style={{ height: "70px" }}>
               <img
                 src="/logo.png"
                 alt="Logo"
@@ -111,14 +109,7 @@ export default function Header() {
                 <div className="text-sm text-gray-700">Lapor - PCR</div>
                 <div className="text-lg font-bold text-[#001d3d]">Politeknik Caltex Riau</div>
               </div>
-            </div>
-
-            {/* Toggle (Mobile) */}
-            <div className="md:hidden">
-              <button onClick={() => setMenuOpen(!menuOpen)} className="text-[#2596be] text-2xl focus:outline-none">
-                {menuOpen ? <FaTimes /> : <FaBars />}
-              </button>
-            </div>
+            </Link>
 
             {/* Desktop Navbar */}
             <ul className="hidden md:flex items-center">
@@ -142,7 +133,7 @@ export default function Header() {
               </li>
             </ul>
 
-            {/* Auth Section */}
+            {/* Auth Section + Toggle */}
             <div className="flex items-center gap-3">
               {isAuthenticated() ? (
                 <div className="flex items-center gap-3">
@@ -169,6 +160,16 @@ export default function Header() {
                   Login
                 </button>
               )}
+
+              {/* Toggle Mobile Menu */}
+              <div className="md:hidden">
+                <button
+                  onClick={() => setMenuOpen(!menuOpen)}
+                  className="text-[#2596be] text-2xl focus:outline-none"
+                >
+                  {menuOpen ? <FaTimes /> : <FaBars />}
+                </button>
+              </div>
             </div>
           </div>
 

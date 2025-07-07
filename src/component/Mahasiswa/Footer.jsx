@@ -33,7 +33,7 @@ export default function Footer() {
               <p>pcr@pcr.ac.id</p>
             </div>
           </div>
-          <div className="flex items-start gap-">
+          <div className="flex items-start gap-3">
             <FaMapMarkerAlt className="text-xl mt-1" />
             <div>
               <h4 className="font-bold text-base">Alamat</h4>
@@ -47,7 +47,7 @@ export default function Footer() {
         <div>
           <h3 className="text-lg font-bold mb-3">Sistem</h3>
           <ul className="space-y-2 text-sm">
-            <li><Link to="/" className="hover:underline">Beranda</Link></li>
+            <li><Link to="/home" className="hover:underline">Beranda</Link></li>
             <li><Link to="/about" className="hover:underline">Tentang</Link></li>
             <li><Link to="/artikel" className="hover:underline">Artikel</Link></li>
             <li><Link to="/layanan" className="hover:underline">Layanan</Link></li>
@@ -61,10 +61,10 @@ export default function Footer() {
           <h3 className="text-lg font-bold mb-3">Media Sosial</h3>
           <p className="mb-3 text-sm">Tetap terhubung dengan kami:</p>
           <div className="flex space-x-3 text-xl">
-            <a href="https://instagram.com" target="_blank" rel="noreferrer" className="hover:scale-110 transition"><FaInstagram /></a>
-            <a href="https://youtube.com" target="_blank" rel="noreferrer" className="hover:scale-110 transition"><FaYoutube /></a>
-            <a href="https://twitter.com" target="_blank" rel="noreferrer" className="hover:scale-110 transition"><FaTwitter /></a>
-            <a href="https://facebook.com" target="_blank" rel="noreferrer" className="hover:scale-110 transition"><FaFacebookF /></a>
+            <a href="https://instagram.com/politeknikcaltexriau" target="_blank" rel="noreferrer" className="hover:scale-110 transition"><FaInstagram /></a>
+            <a href="https://youtube.com/PoliteknikCaltexRiauOfficial" target="_blank" rel="noreferrer" className="hover:scale-110 transition"><FaYoutube /></a>
+            <a href="https://twitter.com/infopcr" target="_blank" rel="noreferrer" className="hover:scale-110 transition"><FaTwitter /></a>
+            <a href="https://facebook.com/Politeknik.Caltex.Riau" target="_blank" rel="noreferrer" className="hover:scale-110 transition"><FaFacebookF /></a>
             <a href="https://pcr.ac.id" target="_blank" rel="noreferrer" className="hover:scale-110 transition"><FaGlobe /></a>
           </div>
         </div>

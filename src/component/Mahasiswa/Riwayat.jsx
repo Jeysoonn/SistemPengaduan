@@ -93,7 +93,7 @@ export default function RiwayatPengaduan() {
             {error}
           </div>
         ) : riwayat.length === 0 ? (
-          <div className="bg-blue-50 border border-blue-200 text-blue-700 px-4 py-3 rounded-lg text-center">
+          <div className="bg-blue-50 border border-blue-200 text-[#2596be] px-4 py-3 rounded-lg text-center">
             Anda belum memiliki riwayat pengaduan
           </div>
         ) : (

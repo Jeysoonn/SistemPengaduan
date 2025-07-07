@@ -7,6 +7,7 @@ export default function About() {
     const [show, setShow] = useState(false);
 
     useEffect(() => {
+        window.scrollTo(0, 0);
         const timer = setTimeout(() => setShow(true), 100);
         return () => clearTimeout(timer);
     }, []);
@@ -189,20 +190,20 @@ export default function About() {
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-12 justify-items-center">
                         {[{
                             name: "Baldi Agus",
-                            role: "Frontend Developer",
-                            img: "/tim1.jpg",
+                            role: "Fullstack Developer",
+                            img: "/baldi.jpg",
                         }, {
                             name: "Indah Ramadhani",
-                            role: "UI/UX Designer",
-                            img: "/tim2.jpg",
+                            role: "Frontend Designer",
+                            img: "/indah.jpg",
                         }, {
                             name: "Jason Angriawan",
                             role: "Backend Developer",
-                            img: "/tim3.jpg",
+                            img: "/jason.jpg",
                         }, {
                             name: "Fadgham Dzikra",
                             role: "Project Manager",
-                            img: "/tim4.jpg",
+                            img: "/fadgham.jpg",
                         }].map((member, idx) => (
                             <div key={idx} className="flex flex-col items-center">
                                 <img

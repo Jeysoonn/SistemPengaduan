@@ -13,7 +13,6 @@ export default function Login() {
   const location = useLocation();
   const { login } = useUser();
 
-  // Get the intended destination from location state
   const from = location.state?.from?.pathname || "/";
 
   const handleSubmit = async (e) => {
@@ -28,32 +27,19 @@ export default function Login() {
     }
 
     try {
-      // Cek data login ke API menggunakan userAPI
       const users = await userAPI.fetchUser();
-
-      // Mencari pengguna berdasarkan email
       const user = users.find(
         (user) => user.email === email && user.password === password
       );
 
       if (user) {
-        // Store user data in context and localStorage
         login(user);
-        
-        // Setelah login berhasil, periksa role pengguna dan arahkan ke halaman yang sesuai
-        if (user.role === "Admin") {
-          navigate("/admin");
-        } else if (user.role === "BSTI") {
-          navigate("/bsti");
-        } else if (user.role === "Mahasiswa") {
-          navigate("/home");
-        } else if (user.role === "Security") {
-          navigate("/security");
-        } else if (user.role === "BAAK") {
-          navigate("/baak");
-        } else {
-          setError("Unknown role");
-        }
+        if (user.role === "Admin") navigate("/admin");
+        else if (user.role === "BSTI") navigate("/bsti");
+        else if (user.role === "Mahasiswa") navigate("/home");
+        else if (user.role === "Security") navigate("/security");
+        else if (user.role === "BAAK") navigate("/baak");
+        else setError("Unknown role");
       } else {
         setError("Invalid email or password");
       }
@@ -67,7 +53,7 @@ export default function Login() {
 
   return (
     <>
-      <h2 className="text-3xl font-bold text-gray-800 mb-4 font-poppins">Login</h2>
+      <h2 className="text-3xl font-bold text-[#2596be] mb-4 font-poppins">Login</h2>
       <p className="text-gray-500 text-sm mb-4 font-poppins">or use your account</p>
 
       {error && <div className="text-red-500 text-sm mb-3">{error}</div>}
@@ -78,7 +64,7 @@ export default function Login() {
           <input
             type="email"
             placeholder="Email"
-            className="w-full px-4 text-black py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400"
+            className="w-full px-4 text-black py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#37CAD2]"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             disabled={loading}
@@ -93,7 +79,7 @@ export default function Login() {
           <input
             type="password"
             placeholder="Password"
-            className="w-full px-4 text-black py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400"
+            className="w-full px-4 text-black py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#37CAD2]"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             disabled={loading}
@@ -104,14 +90,14 @@ export default function Login() {
         </div>
 
         {/* Forgot Password */}
-        <div className="text-right text-sm text-blue-600 hover:underline cursor-pointer">
+        <div className="text-right text-sm text-[#2596be] hover:underline cursor-pointer">
           Forgot your password?
         </div>
 
         {/* Submit Button */}
         <button
           type="submit"
-          className="w-full py-2 bg-blue-500 text-white font-semibold rounded-full hover:bg-blue-600 transition font-poppins"
+          className="w-full py-2 bg-gradient-to-r from-[#37CAD2] to-[#91CBE3] text-white font-semibold rounded-full hover:opacity-90 transition font-poppins"
           disabled={loading}
         >
           {loading ? "Logging in..." : "LOG IN"}
@@ -121,7 +107,7 @@ export default function Login() {
         <button
           type="button"
           onClick={() => navigate('/auth/register')}
-          className="w-full py-2 border border-blue-500 text-blue-500 font-semibold rounded-full hover:bg-blue-50 transition font-poppins"
+          className="w-full py-2 border border-[#37CAD2] text-[#37CAD2] font-semibold rounded-full hover:bg-[#ecfdfd] transition font-poppins"
         >
           Register
         </button>

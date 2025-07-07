@@ -10,6 +10,7 @@ export default function FAQ() {
     const [show, setShow] = useState(false);
 
     useEffect(() => {
+        window.scrollTo(0, 0);
         const timer = setTimeout(() => setShow(true), 100);
         return () => clearTimeout(timer);
     }, []);

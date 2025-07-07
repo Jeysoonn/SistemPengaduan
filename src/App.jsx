@@ -34,6 +34,7 @@ const About = lazy(() => import("./pages/Mahasiswa/About"));
 const Pengaduan = lazy(() => import("./pages/Mahasiswa/Pengaduan"));
 const FAQ = lazy(() => import("./pages/Mahasiswa/FAQ"));
 const Artikel = lazy(() => import("./pages/Mahasiswa/Artikel"));
+const DetailArtikel = lazy(() => import("./pages/Mahasiswa/DetailArtikel"));
 const Layanan = lazy(() => import("./pages/Mahasiswa/Layanan"));
 
 const Faq = lazy(() => import("./pages/Admin/Faq"));
@@ -121,6 +122,7 @@ export default function App() {
               <Route path="/pengaduan" element={<Pengaduan />} />
               <Route path="/faq" element={<FAQ />} />
               <Route path="/artikel" element={<Artikel />} />
+              <Route path="/artikel/:id" element={<DetailArtikel />} />
               <Route path="/layanan" element={<Layanan />} />
             </Route>
 
