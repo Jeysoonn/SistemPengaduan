@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { supabase, uploadFile, getPublicUrl, STORAGE_BUCKET, checkBucketAccess } from '../../config/supabaseClient';
 import { useUser } from '../../context/UserContext';
 import { pengaduanAPI } from '../../service/apiPengaduan';
+import Swal from 'sweetalert2';
 
 export default function FormulirPengaduan() {
   const [formData, setFormData] = useState({
@@ -23,10 +24,10 @@ export default function FormulirPengaduan() {
 
   useEffect(() => {
     const timer = setTimeout(() => setShowForm(true), 100);
-    
+
     // Check bucket access on component mount
     checkBucketAccessibility();
-    
+
     return () => clearTimeout(timer);
   }, []);
 
@@ -38,7 +39,7 @@ export default function FormulirPengaduan() {
       // Check if bucket is accessible
       const isAccessible = await checkBucketAccess(STORAGE_BUCKET);
       setBucketAccessible(isAccessible);
-      
+
       if (!isAccessible) {
         console.warn('Bucket not accessible, but continuing with form');
         setMessage({
@@ -125,7 +126,7 @@ export default function FormulirPengaduan() {
   const handleDrop = (e) => {
     e.preventDefault();
     setIsDragOver(false);
-    
+
     const files = e.dataTransfer.files;
     if (files.length > 0) {
       const file = files[0];
@@ -149,13 +150,13 @@ export default function FormulirPengaduan() {
       if (formData.file && bucketAccessible) {
         try {
           setUploadProgress(10);
-          
+
           const fileExt = formData.file.name.split('.').pop();
           const fileName = `${newIdPengaduan}_${Date.now()}.${fileExt}`;
           const filePath = `pengaduan/${fileName}`;
 
           console.log('Starting file upload process...');
-          
+
           // Upload file using the helper function
           await uploadFile(STORAGE_BUCKET, filePath, formData.file);
           setUploadProgress(50);
@@ -163,7 +164,7 @@ export default function FormulirPengaduan() {
           // Get public URL
           fileUrl = getPublicUrl(STORAGE_BUCKET, filePath);
           setUploadProgress(100);
-          
+
           console.log('File upload completed successfully');
         } catch (uploadError) {
           console.error('File upload failed:', uploadError);
@@ -191,10 +192,14 @@ export default function FormulirPengaduan() {
       await pengaduanAPI.createPengaduan(submitData);
 
       // Show success message
-      setMessage({
-        type: 'success',
-        text: 'Pengaduan berhasil dikirim! Tim akan segera menindaklanjuti laporan Anda.',
+      await Swal.fire({
+        icon: 'success',
+        title: 'Pengaduan Terkirim!',
+        text: 'Kami akan segera menindaklanjuti laporan Anda.',
+        confirmButtonColor: '#34BBD1',
+        confirmButtonText: 'Oke Siap!',
       });
+
 
       // Reset form
       setFormData({
@@ -211,10 +216,10 @@ export default function FormulirPengaduan() {
 
     } catch (error) {
       console.error('Error submitting pengaduan:', error);
-      
+
       // Handle specific error types
       let errorMessage = error.message || 'Gagal mengirim pengaduan. Silakan coba lagi.';
-      
+
       if (error.message.includes('row-level security policy')) {
         errorMessage = 'Sistem upload file sedang dalam maintenance. Silakan hubungi administrator atau coba lagi nanti.';
       } else if (error.message.includes('bucket not found')) {
@@ -222,11 +227,15 @@ export default function FormulirPengaduan() {
       } else if (error.message.includes('network') || error.message.includes('fetch')) {
         errorMessage = 'Koneksi internet bermasalah. Silakan cek koneksi Anda dan coba lagi.';
       }
-      
-      setMessage({
-        type: 'error',
+
+      await Swal.fire({
+        icon: 'error',
+        title: 'Oops!',
         text: errorMessage,
+        confirmButtonColor: '#e63946',
+        confirmButtonText: 'Tutup',
       });
+
     } finally {
       setIsLoading(false);
       setUploadProgress(0);
@@ -252,9 +261,8 @@ export default function FormulirPengaduan() {
 
       {/* Form Container */}
       <div
-        className={`relative z-10 max-w-2xl mx-auto p-8 bg-white rounded-2xl shadow-xl transition-all duration-700 ease-in-out ${
-          showForm ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-        }`}
+        className={`relative z-10 max-w-2xl mx-auto p-8 bg-white rounded-2xl shadow-xl transition-all duration-700 ease-in-out ${showForm ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          }`}
       >
         <h2 className="text-3xl font-bold text-center text-white bg-gradient-to-r from-[#37CAD2] to-[#2596be] py-4 rounded-xl shadow-lg mb-8">
           Formulir Pengaduan
@@ -262,13 +270,12 @@ export default function FormulirPengaduan() {
 
         {message.text && (
           <div
-            className={`mb-6 p-4 rounded-lg ${
-              message.type === 'success' 
-                ? 'bg-green-100 text-green-700' 
-                : message.type === 'warning'
+            className={`mb-6 p-4 rounded-lg ${message.type === 'success'
+              ? 'bg-green-100 text-green-700'
+              : message.type === 'warning'
                 ? 'bg-yellow-100 text-yellow-700'
                 : 'bg-red-100 text-red-700'
-            }`}
+              }`}
           >
             {message.text}
           </div>
@@ -282,7 +289,7 @@ export default function FormulirPengaduan() {
               <span>{uploadProgress}%</span>
             </div>
             <div className="w-full bg-gray-200 rounded-full h-2">
-              <div 
+              <div
                 className="bg-blue-600 h-2 rounded-full transition-all duration-300"
                 style={{ width: `${uploadProgress}%` }}
               ></div>
@@ -301,7 +308,7 @@ export default function FormulirPengaduan() {
               onChange={handleChange}
               required
               placeholder="Masukkan judul laporan Anda"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className={`w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${formData.judul ? 'text-gray-900' : 'text-gray-500'}`}
             />
           </div>
 
@@ -315,7 +322,8 @@ export default function FormulirPengaduan() {
               required
               placeholder="Jelaskan isi laporan Anda"
               rows={5}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className={`w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${formData.deskripsi ? 'text-gray-900' : 'text-gray-500'
+                }`}
             ></textarea>
           </div>
 
@@ -327,7 +335,8 @@ export default function FormulirPengaduan() {
               value={formData.tujuan}
               onChange={handleChange}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className={`w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${formData.tujuan ? 'text-gray-900' : 'text-gray-500'
+                }`}
             >
               <option value="">Pilih Tujuan</option>
               <option value="BSTI">BSTI</option>
@@ -345,14 +354,13 @@ export default function FormulirPengaduan() {
                 <span className="text-xs text-yellow-600 ml-2">(Opsional - sistem upload tidak tersedia)</span>
               )}
             </label>
-            <div 
-              className={`border-2 border-dashed rounded-lg p-6 text-center transition-all duration-300 ${
-                isDragOver 
-                  ? 'border-blue-400 bg-blue-50' 
-                  : bucketAccessible 
-                    ? 'border-gray-300 hover:border-blue-400' 
-                    : 'border-gray-300 bg-gray-50 opacity-75'
-              }`}
+            <div
+              className={`border-2 border-dashed rounded-lg p-6 text-center transition-all duration-300 ${isDragOver
+                ? 'border-blue-400 bg-blue-50'
+                : bucketAccessible
+                  ? 'border-gray-300 hover:border-blue-400'
+                  : 'border-gray-300 bg-gray-50 opacity-75'
+                }`}
               onDragOver={bucketAccessible ? handleDragOver : undefined}
               onDragLeave={bucketAccessible ? handleDragLeave : undefined}
               onDrop={bucketAccessible ? handleDrop : undefined}
@@ -381,7 +389,7 @@ export default function FormulirPengaduan() {
                 </div>
               </label>
             </div>
-            
+
             {/* File preview */}
             {formData.file && (
               <div className="mt-4 p-4 bg-gray-50 rounded-lg">
@@ -409,7 +417,7 @@ export default function FormulirPengaduan() {
                     </svg>
                   </button>
                 </div>
-                
+
                 {/* Image preview */}
                 {formData.previewUrl && (
                   <div className="mt-3">
