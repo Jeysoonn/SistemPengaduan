@@ -10,7 +10,6 @@ export default function Header() {
 
   const [activeSection, setActiveSection] = useState("home");
   const [bgOpacity, setBgOpacity] = useState(0);
-  const [scrolling, setScrolling] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -44,11 +43,9 @@ export default function Header() {
       const scrollPosition = window.scrollY;
       const opacity = Math.min(scrollPosition / 300, 1);
       setBgOpacity(opacity);
-      setScrolling(true);
 
       clearTimeout(scrollTimeout);
       scrollTimeout = setTimeout(() => {
-        setScrolling(false);
         if (opacity > 0) setBgOpacity(1);
       }, 1000);
     };
@@ -67,27 +64,28 @@ export default function Header() {
   };
 
   const ListHeader = ({ title, href, isActive }) => {
-    const menuClass = () =>
-      `flex cursor-pointer items-center rounded-xl p-4 space-x-2
-       ${isActive ? "font-extrabold" : "hover:text-[#5ab3d1] hover:font-bold transition-all duration-200"}
-       text-base relative`;
+  const menuClass = () =>
+    `flex cursor-pointer items-center rounded-xl p-4 space-x-2
+     ${isActive ? "font-extrabold" : "hover:text-[#5ab3d1] hover:font-bold transition-all duration-200"}
+     text-base relative`;
 
-    return (
-      <Link
-        to={href}
-        className={`${menuClass()} ${isActive ? "text-[#2596be]" : "text-gray-600"}`}
-        onClick={() => setMenuOpen(false)}
-      >
-        <span>{title}</span>
-        {isActive && (
-          <span
-            className="absolute bottom-0 left-0 w-full h-1 rounded-t-md bg-[#2596be]"
-            style={{ marginTop: "4px" }}
-          />
-        )}
-      </Link>
-    );
-  };
+  return (
+    <Link
+      to={href}
+      className={`${menuClass()} ${isActive ? "text-[#2596be]" : "text-gray-600"}`}
+      onClick={() => setMenuOpen(false)}
+    >
+      <span className="relative z-10">{title}</span>
+      {isActive && (
+        <span
+          className="absolute bottom-1 left-0 right-0 h-1 rounded-t-md bg-[#2596be] md:w-full md:mx-0 w-fit mx-auto"
+          style={{ marginTop: "4px" }}
+        />
+      )}
+    </Link>
+  );
+};
+
 
   return (
     <div
@@ -97,8 +95,28 @@ export default function Header() {
       <div className="flex justify-center items-center">
         <div className="container px-5">
           <div className="flex justify-between items-center py-4">
-            {/* Logo bisa diklik */}
-            <Link to="/home" className="flex items-center space-x-3 cursor-pointer" style={{ height: "70px" }}>
+            <div className="flex items-center md:hidden gap-3">
+              <button
+                onClick={() => setMenuOpen(!menuOpen)}
+                className="text-[#2596be] text-2xl focus:outline-none"
+              >
+                {menuOpen ? <FaTimes /> : <FaBars />}
+              </button>
+              <Link to="/home">
+                <img
+                  src="/logo.png"
+                  alt="Logo"
+                  className="h-10 w-auto object-contain"
+                />
+              </Link>
+            </div>
+
+            {/* Desktop: Logo + Teks */}
+            <Link
+              to="/home"
+              className="items-center space-x-3 cursor-pointer hidden md:flex"
+              style={{ height: "70px" }}
+            >
               <img
                 src="/logo.png"
                 alt="Logo"
@@ -107,11 +125,13 @@ export default function Header() {
               />
               <div className="leading-tight">
                 <div className="text-sm text-gray-700">Lapor - PCR</div>
-                <div className="text-lg font-bold text-[#001d3d]">Politeknik Caltex Riau</div>
+                <div className="text-lg font-bold text-[#001d3d]">
+                  Politeknik Caltex Riau
+                </div>
               </div>
             </Link>
 
-            {/* Desktop Navbar */}
+            {/* Desktop Menu */}
             <ul className="hidden md:flex items-center">
               <li className="mx-3 font-bold">
                 <ListHeader href="/home" title="Home" isActive={activeSection === "home"} />
@@ -133,7 +153,7 @@ export default function Header() {
               </li>
             </ul>
 
-            {/* Auth Section + Toggle */}
+            {/* Auth Section (Tetap tampil di mobile & desktop) */}
             <div className="flex items-center gap-3">
               {isAuthenticated() ? (
                 <div className="flex items-center gap-3">
@@ -141,13 +161,11 @@ export default function Header() {
                     <p className="text-sm font-semibold text-gray-800">
                       {user?.nama || user?.email || "User"}
                     </p>
-                    <p className="text-xs text-gray-500">
-                      {user?.role || "Role"}
-                    </p>
+                    <p className="text-xs text-gray-500">{user?.role || "Role"}</p>
                   </div>
                   <button
                     onClick={handleLogout}
-                    className="bg-red-500 text-white px-6 py-2 font-bold rounded-lg text-sm shadow-md hover:bg-red-600 transition-colors duration-300"
+                    className="bg-red-500 text-white px-4 py-2 font-bold rounded-lg text-sm shadow-md hover:bg-red-600 transition-colors duration-300"
                   >
                     Logout
                   </button>
@@ -155,33 +173,24 @@ export default function Header() {
               ) : (
                 <button
                   onClick={() => navigate("/auth/login")}
-                  className="bg-[#1e7da0] text-white px-8 py-2 font-bold rounded-lg text-sm shadow-md hover:shadow-lg transition-shadow duration-300"
+                  className="bg-[#1e7da0] text-white px-6 py-2 font-bold rounded-lg text-sm shadow-md hover:shadow-lg transition-shadow duration-300"
                 >
                   Login
                 </button>
               )}
-
-              {/* Toggle Mobile Menu */}
-              <div className="md:hidden">
-                <button
-                  onClick={() => setMenuOpen(!menuOpen)}
-                  className="text-[#2596be] text-2xl focus:outline-none"
-                >
-                  {menuOpen ? <FaTimes /> : <FaBars />}
-                </button>
-              </div>
             </div>
           </div>
 
-          {/* Mobile Navbar */}
+          {/* Mobile Menu Items */}
           {menuOpen && (
-            <ul className="md:hidden flex flex-col items-start space-y-1 mb-4">
+            <div className="md:hidden flex flex-col space-y-2 mb-4">
               <ListHeader href="/home" title="Home" isActive={activeSection === "home"} />
               <ListHeader href="/about" title="About" isActive={activeSection === "about"} />
               <ListHeader href="/artikel" title="Artikel" isActive={activeSection === "artikel"} />
               <ListHeader href="/layanan" title="Layanan" isActive={activeSection === "layanan"} />
               <ListHeader href="/pengaduan" title="Pengaduan" isActive={activeSection === "pengaduan"} />
               <ListHeader href="/faq" title="FAQ" isActive={activeSection === "faq"} />
+              {/* Login mobile fallback only if not logged in */}
               {!isAuthenticated() && (
                 <button
                   onClick={() => {
@@ -193,7 +202,7 @@ export default function Header() {
                   Login
                 </button>
               )}
-            </ul>
+            </div>
           )}
         </div>
       </div>

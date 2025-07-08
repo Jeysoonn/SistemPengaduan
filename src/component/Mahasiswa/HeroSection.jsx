@@ -8,7 +8,7 @@ export default function HeroSection() {
 
   useEffect(() => {
     const textTimer = setTimeout(() => setShowText(true), 300);
-    const imageTimer = setTimeout(() => setShowImage(true), 500); // sedikit delay lebih lama gambar
+    const imageTimer = setTimeout(() => setShowImage(true), 500);
 
     return () => {
       clearTimeout(textTimer);
@@ -28,7 +28,7 @@ export default function HeroSection() {
       <div className="absolute bottom-28 right-[-100px] w-[180px] h-[180px] bg-[#b0dff5] rounded-full opacity-50 z-0"></div>
 
       <div className="container max-w-7xl mx-auto relative z-10">
-        <div className="flex flex-col-reverse md:flex-row items-center justify-between gap-10">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-10">
           {/* Teks */}
           <div className="md:w-1/2 text-center md:text-left space-y-6">
             <h1

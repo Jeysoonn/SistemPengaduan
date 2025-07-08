@@ -29,7 +29,6 @@ export default function Footer() {
             <FaEnvelope className="text-xl mt-1" />
             <div>
               <h4 className="font-bold text-base">Email</h4>
-              <p>pmb@pcr.ac.id</p>
               <p>pcr@pcr.ac.id</p>
             </div>
           </div>

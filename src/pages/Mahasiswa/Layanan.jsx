@@ -87,7 +87,7 @@ export default function Layanan() {
             <PageHeader title="Layanan" icon={<FaServicestack className="text-2xl text-[#fbfbfa]"/>}/>
             
             {/* Penjelasan Layanan */}
-            <section className="py-12 px-6 md:px-12 max-w-screen-xl mx-auto">
+            <section className="py-12 px-6 md:px-12 max-w-screen-xl mt-6 mx-auto">
                 <div className={`text-center mb-12 transition-all duration-700 ease-in-out ${show ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                     <h2 className="text-3xl font-bold text-[#2596be] mb-4">Layanan Pengaduan Kampus</h2>
                     <p className="text-gray-600 max-w-3xl mx-auto text-lg">
@@ -115,7 +115,7 @@ export default function Layanan() {
             </section>
             
             {/* Cara Menggunakan Layanan */}
-            <section className="py-12 px-6 md:px-12 max-w-screen-xl mx-auto bg-white rounded-xl shadow-md mt-12">
+            <section className="py-12 px-6 md:px-12 max-w-screen-xl mx-auto bg-white rounded-xl shadow-md mt-10">
                 <div className={`transition-all duration-700 ease-in-out ${show ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                     <h2 className="text-2xl font-bold text-[#2596be] mb-6 text-center">Cara Menggunakan Layanan Pengaduan</h2>
                     

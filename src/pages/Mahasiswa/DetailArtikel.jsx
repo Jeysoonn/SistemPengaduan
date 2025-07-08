@@ -105,35 +105,30 @@ Transparansi proses sangat penting agar mahasiswa merasa didengar dan dilayani d
       />
 
       <div
-        className={`max-w-4xl mx-auto px-4 md:px-6 pt-10 transition-opacity duration-[1500ms] ease-in-out ${
+        className={`max-w-4xl mx-auto px-4 sm:px-6 pt-10 mt-8 transition-opacity duration-[1500ms] ease-in-out ${
           show ? "opacity-100" : "opacity-0"
         }`}
       >
-        {/* Card container */}
-        <div className="bg-white rounded-xl shadow-lg p-8">
-          {/* Tombol kembali */}
+        <div className="bg-white rounded-xl shadow-lg p-5 sm:p-8">
           <button
             onClick={() => navigate(-1)}
-            className="text-[#2FB6CD] mb-6 flex items-center font-medium hover:underline"
+            className="text-[#2FB6CD] mb-4 sm:mb-6 flex items-center font-medium hover:underline text-sm sm:text-base"
           >
             <FaArrowLeft className="mr-2" /> Kembali ke Daftar Artikel
           </button>
 
-          {/* Gambar artikel */}
           <img
             src={artikel.gambar}
             alt={artikel.judul}
-            className="rounded-xl w-full max-h-[400px] object-cover mb-6 shadow"
+            className="rounded-xl w-full max-h-64 sm:max-h-[400px] object-cover mb-4 sm:mb-6 shadow"
           />
 
-          {/* Judul & info */}
-          <h1 className="text-4xl font-bold text-gray-800 mb-2">{artikel.judul}</h1>
-          <div className="text-sm text-gray-500 mb-6">
+          <h1 className="text-2xl sm:text-4xl font-bold text-gray-800 mb-2">{artikel.judul}</h1>
+          <div className="text-sm text-gray-500 mb-4 sm:mb-6">
             Ditulis oleh <strong>{artikel.penulis}</strong> pada {artikel.tanggal}
           </div>
 
-          {/* Isi */}
-          <div className="text-lg text-gray-700 leading-relaxed whitespace-pre-line">
+          <div className="text-base sm:text-lg text-gray-700 leading-relaxed whitespace-pre-line">
             {artikel.isi}
           </div>
         </div>

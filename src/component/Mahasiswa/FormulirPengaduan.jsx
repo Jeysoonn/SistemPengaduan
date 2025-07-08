@@ -236,7 +236,7 @@ export default function FormulirPengaduan() {
   // Show loading state while initializing
   if (isInitializing) {
     return (
-      <div className="relative bg-[#ffffff] py-20 px-4">
+      <div className="relative bg-[#ffffff] py-20 px-4 ">
         <div className="max-w-2xl mx-auto p-8 bg-white rounded-2xl shadow-xl text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
           <p className="text-gray-600">Memeriksa sistem upload...</p>
@@ -246,7 +246,7 @@ export default function FormulirPengaduan() {
   }
 
   return (
-    <div className="relative bg-[#ffffff] py-20 px-4">
+    <div className="relative bg-[#ffffff] py-20 px-4 overflow-hidden">
       {/* Elemen dekoratif bulat */}
       <div className="absolute bottom-[-80px] right-[-80px] w-72 h-72 bg-[#8fd8f8] opacity-20 rounded-full z-0"></div>
 
